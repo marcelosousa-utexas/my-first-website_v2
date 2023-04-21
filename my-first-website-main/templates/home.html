@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Job Openings</title>
+    <style>
+      h1 {
+        font-size: 40px;
+        font-family: Roboto;
+        font-weight: normal;
+        color: rgb(100, 100, 100);
+        text-align: center;
+      }
+      #banner {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+      }
+      
+    </style>
+  </head>
+<body>
+  <h1> {{title}} </h1>
+  <!--     <img src= "https://my-first-website.marcelosousa-ut.repl.co/static/header_image.jpg", height = "320"> -->
+  
+  <img id = "banner" src= "https://my-first-website.marcelosousa-ut.repl.co/static/header_image.jpg">
+<div class="container text-center">
+  <div class="row align-items-start">
+    <div class="col">
+      One of three columns
+    </div>
+    <div class="col">
+      One of three columns
+    </div>
+    <div class="col">
+      One of three columns
+    </div>
+  </div>
+</div>
+  
+  <h1> Another h1 </h1>
+  <h2> Sub-Title </h2>
+  <p>  
+    {% for job in jobs %}
+      {% include 'jobitem.html' %}
+    {% endfor %}
+    
+  </p> 
+  <button> Contact us </button>
+</body>
+    
+</html>
+
+
+
+<!-- to learn more about HTML -->
+<!-- https://www.htmldog.com/guides/html/beginner/-->
+
+<!-- to learn more CSS -->
+<!-- https://www.htmldog.com/guides/css/beginner/ -->
+
+<!-- Bootstrap CSS -->
+<!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/
+ -->
+
+<!-- free images -->
+<!-- https://unsplash.com/ -->
+
+<!-- text generator -->
+<!-- https://loremipsum.io/ -->
+
