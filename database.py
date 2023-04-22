@@ -2,7 +2,7 @@ import os
 #import sqlalchemy
 from sqlalchemy import create_engine, text
 
-db_connection_string = os.environ['DB_CONNECTION_STRING']
+db_connection_string = os.environ.get['DB_CONNECTION_STRING']
 
 connection_ssl_arg = {
   "ssl": {
