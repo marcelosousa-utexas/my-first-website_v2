@@ -1,15 +1,15 @@
 #import sqlalchemy
 from sqlalchemy import create_engine, text
 
-db_connection_string = "mysql+pymysql://amiezd22ops2rw1jjl1u:pscale_pw_Nb71unYyVg7zLteFUDRlOiLVzfYTTWr0iDugqbOgOyv@aws.connect.psdb.cloud/my-first-database?charset=utf8mb4"
+db_connection_string = "mysql+pymysql://0b9zcnwnos296ynimcb1:pscale_pw_WGDIbhpuHN5CS3uGudG7p4yKQZd9k5LEsmR1X8cbGpN@aws.connect.psdb.cloud/my-first-database?charset=utf8mb4"
 
-connect_ssl_arg = {
+connection_ssl_arg = {
   "ssl": {
-    "ssl_ca": "/etc/ssl/cert.pem"
+    "ca": "/etc/ssl/cert.pem"
   }
 } 
 
-engine = create_engine(db_connection_string, connect_args = connect_ssl_arg)
+engine = create_engine(db_connection_string, connect_args = connection_ssl_arg)
 
 
 with engine.connect() as connection:
