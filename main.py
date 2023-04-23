@@ -1,10 +1,19 @@
-from flask import Flask, render_template, jsonify
+import os
+import nltk
+from flask import Flask, render_template
+from database import engine
+from sqlalchemy import text
 
-from database import load_jobs_from_db
-#from sqlalchemy import text
+nltk.data.path.append(os.getcwd() + os.sep  + "nltk_data")
+print(nltk.data.path)
+print(os.getcwd())
+from nltk.corpus import stopwords
 
 app = Flask(__name__)
 
+
+
+print(stopwords.words('portuguese'))
   
 #print(sqlalchemy.__version__)  
 
