@@ -1,8 +1,7 @@
 import os
 import nltk
-from flask import Flask, render_template
-from database import engine
-from sqlalchemy import text
+from flask import Flask, render_template, jsonify
+from database import load_jobs_from_db
 
 nltk.data.path.append(os.getcwd() + os.sep  + "nltk_data")
 print(nltk.data.path)
@@ -14,22 +13,7 @@ app = Flask(__name__)
 
 
 print(stopwords.words('portuguese'))
-
-
-
-def load_jobs_from_db():
-  results_to_dict = []
-  
-  with engine.connect() as connection:
-    result = connection.execute(text("select * from jobs"))
-    #results_to_dict = []
-    for row in result.all():
-      results_to_dict.append(row._asdict())
-    #  results_to_dict.append(dict(row))
-  return results_to_dict
-  #print(results_to_dict)
-    #print(result.all())
-
+print(__name__)
   
 #print(sqlalchemy.__version__)  
 
@@ -39,7 +23,12 @@ def hello_word():
   return render_template("home.html", jobs=results_to_dict)
   #return "<p> Hello, world <p>"
 
-#if __name__ == "__name__":  
-if __name__ == "app":
+@app.route("/api/jobs")
+def list_jobs():
+  results_to_dict = load_jobs_from_db()
+  return jsonify(results_to_dict)
+
+#if __name__ == "app":
+if __name__ == "__main__":  
   print("hello2")
   app.run(host = '0.0.0.0', debug = True)
