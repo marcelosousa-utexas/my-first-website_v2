@@ -1,131 +1,143 @@
-
 <!DOCTYPE html>
 <html>
-<html>
-<head>
-<title>Student Registration Form</title>
-<style type="text/css">
-h3{font-family: Calibri; font-size: 22pt; font-style: normal; font-weight: bold; color:SlateBlue;
-text-align: center; text-decoration: underline }
-table{font-family: Calibri; color:white; font-size: 11pt; font-style: normal;
-text-align:; background-color: SlateBlue; border-collapse: collapse; border: 2px solid navy}
-table.inner{border: 0px}
-</style>
-</head>
+   <html>
+      <head>
+         <title>Student Registration Form</title>
+         <style type="text/css">
+            h3
+            {font-family: Calibri; font-size: 22pt; font-style: normal; font-weight: bold; color:SlateBlue;
+            text-align: center; text-decoration: underline }
+            table{font-family: Calibri; color:white; font-size: 11pt; font-style: normal;
+            text-align:; background-color: SlateBlue; border-collapse: collapse; border: 2px solid navy}
+            table.inner{border: 0px}
+            div {
+              width: 100%;
+              height: 5px;
+              object-fit: cover;              
+            }
 
- 
-<body>
-<h3>STUDENT REGISTRATION FORM</h3>
- 
-<table align="center" cellpadding = "10">
- 
+      
+    </style>           
 
-<!----- Qualification---------------------------------------------------------->
-<tr>
-<td>QUALIFICATION 
- 
-</td>
- 
-<td>
-<table>
- 
-<tr>
-<td align="center"><b>Sl.No.</b></td>
-<td align="center"><b>Examination</b></td>
-<td align="center"><b>Board</b></td>
-<td align="center"><b>Percentage</b></td>
-<td align="center"><b>Year of Passing</b></td>
-</tr>
- 
-<tr>
-<td>1</td>
-<td>Class X</td>
-<td><input type="text" name="ClassX_Board" maxlength="30" /></td>
-<td><input type="text" name="ClassX_Percentage" maxlength="30" /></td>
-<td><input type="text" name="ClassX_YrOfPassing" maxlength="30" /></td>
-</tr>
- 
-<tr>
-<td>2</td>
-<td>Class XII</td>
-<td><input type="text" name="ClassXII_Board" maxlength="30" /></td>
-<td><input type="text" name="ClassXII_Percentage" maxlength="30" /></td>
-<td><input type="text" name="ClassXII_YrOfPassing" maxlength="30" /></td>
-</tr>
- 
-<tr>
-<td>3</td>
-<td>Graduation</td>
-<td><input type="text" name="Graduation_Board" maxlength="30" /></td>
-<td><input type="text" name="Graduation_Percentage" maxlength="30" /></td>
-<td><input type="text" name="Graduation_YrOfPassing" maxlength="30" /></td>
-</tr>
- 
-<tr>
-<td>4</td>
-<td>Masters</td>
-<td><input type="text" name="Masters_Board" maxlength="30" /></td>
-<td><input type="text" name="Masters_Percentage" maxlength="30" /></td>
-<td><input type="text" name="Masters_YrOfPassing" maxlength="30" /></td>
-</tr>
+           
+         </style>
+      </head>
+      <body>
+         <h3>STUDENT REGISTRATION FORM</h3>
+         <table align="center" cellpadding = "10">
+            <!----- Qualification---------------------------------------------------------->
+            <tr>
+               <td>QUALIFICATION 
+               </td>
+               <td>
+                  <table>
+                     <tr>
+                        <td align="center"><b>Sl.No.</b></td>
+                        <td align="center"><b>Examination</b></td>
+                        <td align="center"><b>Board</b></td>
+                        <td align="center"><b>Percentage</b></td>
+                        <td align="center"><b>Year of Passing</b></td>
+                     </tr>
+                     <tr>
+                        <td>1</td>
+                        <td>Class X</td>
+                        <td><input type="text" name="ClassX_Board" maxlength="30" /></td>
+                        <td><input type="text" name="ClassX_Percentage" maxlength="30" /></td>
+                        <td><input type="text" name="ClassX_YrOfPassing" maxlength="30" /></td>
+                     </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>Class XII</td>
+                        <td><input type="text" name="ClassXII_Board" maxlength="30" /></td>
+                        <td><input type="text" name="ClassXII_Percentage" maxlength="30" /></td>
+                        <td><input type="text" name="ClassXII_YrOfPassing" maxlength="30" /></td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>Graduation</td>
+                        <td><input type="text" name="Graduation_Board" maxlength="30" /></td>
+                        <td><input type="text" name="Graduation_Percentage" maxlength="30" /></td>
+                        <td><input type="text" name="Graduation_YrOfPassing" maxlength="30" /></td>
+                     </tr>
+                     <tr>
+                        <td>4</td>
+                        <td>Masters</td>
+                        <td><input type="text" name="Masters_Board" maxlength="30" /></td>
+                        <td><input type="text" name="Masters_Percentage" maxlength="30" /></td>
+                        <td><input type="text" name="Masters_YrOfPassing" maxlength="30" /></td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td align="center">(10 char max)</td>
+                        <td align="center">(upto 2 decimal)</td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+            <!----- Course ---------------------------------------------------------->
+            <tr>
+               <td>COURSES
+                  APPLIED FOR
+               </td>
+               <td>
+                  BCA
+                  <input type="radio" name="Course_BCA" value="BCA">
+                  B.Com
+                  <input type="radio" name="Course_BCom" value="B.Com">
+                  B.Sc
+                  <input type="radio" name="Course_BSc" value="B.Sc">
+                  B.A
+                  <input type="radio" name="Course_BA" value="B.A">
+               </td>
+            </tr>
+            <!----- Submit and Reset ------------------------------------------------->
+            <tr>
+               <td colspan="2" align="center">
+                  <input type="submit" value="Submit">
+                  <input type="reset" value="Reset">
+               </td>
+            </tr>
+         </table>
+         <table>
+            <!-- <tr>
+               <td align="center"><b></b></td>
+               <td align="center"><b>Classication Name</b></td>
+               <td align="center"><b>Classication Name</b></td>
+               <td align="center"><b>Classication Name</b></td>
+            </tr> -->
+            <tr>
+              <td></td>
+              {% for classification in classifications %}
+                <!-- <td>{{ loop.index }}</td> -->
+                  {% include 'classification_item.html' %}
+                <!-- </tr> -->
+              {% endfor %}
+            </tr>
 
-
-  
- 
-<tr>
-<td></td>
-<td></td>
-<td align="center">(10 char max)</td>
-<td align="center">(upto 2 decimal)</td>
-</tr>
-</table>
- 
-</td>
-</tr>
- 
-<!----- Course ---------------------------------------------------------->
-<tr>
-<td>COURSES
-APPLIED FOR</td>
-<td>
-BCA
-<input type="radio" name="Course_BCA" value="BCA">
-B.Com
-<input type="radio" name="Course_BCom" value="B.Com">
-B.Sc
-<input type="radio" name="Course_BSc" value="B.Sc">
-B.A
-<input type="radio" name="Course_BA" value="B.A">
-</td>
-</tr>
- 
-<!----- Submit and Reset ------------------------------------------------->
-<tr>
-<td colspan="2" align="center">
-<input type="submit" value="Submit">
-<input type="reset" value="Reset">
-</td>
-</tr>
-</table>
-
-<table>
- 
-<tr>
-<td align="center"><b>Sl.No.</b></td>
-<td align="center"><b>Examination</b></td>
-<td align="center"><b>Board</b></td>
-<td align="center"><b>Percentage</b></td>
-<td align="center"><b>Year of Passing</b></td>
-</tr>
- 
-<tr>
-  {% for job in jobs %}
-    <td>{{ loop.index }}</td>
-    {% include 'jobitem.html' %}
-    </tr> 
-  {% endfor %}
-</tr> 
-
-</body>
-    
-</html>
+            <tr>
+              <td colspan=6>
+                <div id="my_box">
+                </div>
+              </td>
+            </tr>           
+        
+              {% for class_parameter in class_parameters %}
+                <tr>           
+                  <td>{{ loop.index }}</td>
+                  {% for parameter in class_parameter %}
+                      <!-- <tr> -->
+                      {% include 'parameter_item.html' %}
+                      <!-- </tr> -->
+                  {% endfor %}
+                </tr> 
+              {% endfor %}
+            <tr>
+               <td colspan="4" align="center">
+                  <input type="submit" value="Submit">
+                  <input type="reset" value="Reset">
+               </td>
+            </tr>           
+          </table>
+      </body>
+   </html>

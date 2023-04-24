@@ -2,6 +2,7 @@ import os
 import nltk
 from flask import Flask, render_template, jsonify
 from database import load_jobs_from_db
+from classificator import build_parameter
 
 nltk.data.path.append(os.getcwd() + os.sep  + "nltk_data")
 print(nltk.data.path)
@@ -10,8 +11,6 @@ from nltk.corpus import stopwords
 
 app = Flask(__name__)
 
-
-
 print(stopwords.words('portuguese'))
 print(__name__)
   
@@ -19,8 +18,10 @@ print(__name__)
 
 @app.route("/")
 def hello_word():
-  results_to_dict = load_jobs_from_db()
-  return render_template("home.html", jobs=results_to_dict)
+  #n_classifications, n_parameters
+  par = build_parameter(2,6)
+  classification_list, parameter_matrix = par.create_parameter_matrix()
+  return render_template("home.html", classifications=classification_list, class_parameters=parameter_matrix)
   #return "<p> Hello, world <p>"
 
 @app.route("/api/jobs")
