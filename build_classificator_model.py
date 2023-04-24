@@ -15,4 +15,4 @@ class build_model():
     dictionary = corpora.Dictionary(parameter_value_list)
     print(os.environ['DISK_FOLDER'] + 'dicionario_palavras_chave.dict')
     #dictionary.save('/var/data/models/dicionario_palavras_chave.dict')
-    dictionary.save(os.environ['DISK_FOLDER'] + 'dicionario_palavras_chave.dict')
+    #dictionary.save(os.environ['DISK_FOLDER'] + 'dicionario_palavras_chave.dict')
