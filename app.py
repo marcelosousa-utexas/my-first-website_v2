@@ -41,11 +41,15 @@ def store_user_parameter():
   parameter_value_matrix.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
   parameter_value_matrix.append([])
 
+  modelname = 'notas_fiscais'
+
   class_model = build_model()
-  class_model.write_dict(parameter_value_matrix)
+  class_model.build_all_models(parameter_value_matrix)
+  class_model.save_all(modelname)
   
   #print(data[classification_list[0]])
-  return jsonify(data)
+  #return jsonify(data)
+  return render_template("model_result.html")
   #return render_template("model_result.html")
 
 # @app.route("/model_result", methods=['POST'])
