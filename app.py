@@ -20,7 +20,8 @@ from disk import disk_access
 #app = Flask(__name__ , static_folder='/home/runner/my-first-websitev2/')
 
 # app = Flask(__name__ , static_folder='/opt/render/project/src/public/uploads')
-app = Flask(__name__ , static_folder='public')
+#app = Flask(__name__ , static_folder='public')
+app = Flask(__name__ , static_folder='public/uploads')
 # UPLOAD_FOLDER = 'public/uploads/'
 
 app.secret_key = "secret key"
