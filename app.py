@@ -15,7 +15,8 @@ from disk import disk_access
 #Save images to the 'static' folder as Flask serves images from this directory
 
 #Create an app object using the Flask class. 
-app = Flask(__name__, static_folder="static")
+#app = Flask(__name__, static_folder="static")
+app = Flask(__name__)
 
 #Add reference fingerprint. 
 #Cookies travel with a signature that they claim to be legit. 
