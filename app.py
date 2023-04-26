@@ -20,7 +20,7 @@ classification_list, parameter_matrix, inverted_parameter_matrix= class_par.crea
 #print(sqlalchemy.__version__)  
 
 @app.route("/")
-def hello_word():
+def init():
   return render_template("home.html", classifications=classification_list, class_parameters=inverted_parameter_matrix)
 
 # @app.route("/api/jobs")
@@ -28,7 +28,7 @@ def hello_word():
 #   results_to_dict = load_jobs_from_db()
 #   return jsonify(results_to_dict)
 
-@app.route("/model_result", methods = ['POST'])
+@app.route("/upload_file", methods = ['POST'])
 def store_user_parameter():
   #data = request.args
   data = request.form
@@ -45,10 +45,10 @@ def store_user_parameter():
   class_model.build_all_models(parameter_value_matrix)
   class_model.save_all(modelname)
 
-  return render_template("model_result.html")
+  return render_template("upload_file.html")
 
 
-@app.route('/greet', methods=['POST'])
+@app.route('/show_file', methods=['POST'])
 def submit_file():
     if request.method == 'POST':
       if 'file_name' not in request.files:
@@ -74,11 +74,11 @@ def submit_file():
         print("full_filename: ", full_filename)
         flash(full_filename)
         file_type = "embed"
-        return render_template("model_result_3.html", file_type=file_type)
+        return render_template("confirm_file.html", file_type=file_type)
 
-@app.route('/test', methods=['POST'])
+@app.route('/model_result', methods=['POST'])
 def test():
-  return render_template("model_result_4.html")
+  return render_template("model_result.html")
 
 if __name__ == "__main__":  
   app.run(host = '0.0.0.0', debug = True)
