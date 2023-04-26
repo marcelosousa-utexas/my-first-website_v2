@@ -1,16 +1,35 @@
 import os
-import nltk
-from flask import Flask, render_template, jsonify, request
+#import nltk
+import pickle
+from flask import Flask, render_template, jsonify, request, flash, redirect
 from database import load_jobs_from_db
 from input_classificator_parameters import build_parameter
 from build_classificator_model import build_model
+from disk import disk_access
 
 # nltk.data.path.append(os.getcwd() + os.sep  + "nltk_data")
 # print(nltk.data.path)
 # print(os.getcwd())
 # from nltk.corpus import stopwords
 
-app = Flask(__name__)
+#Save images to the 'static' folder as Flask serves images from this directory
+
+#Create an app object using the Flask class. 
+app = Flask(__name__, static_folder="static")
+
+#Add reference fingerprint. 
+#Cookies travel with a signature that they claim to be legit. 
+#Legitimacy here means that the signature was issued by the owner of the cookie.
+#Others cannot change this cookie as it needs the secret key. 
+#It's used as the key to encrypt the session - which can be stored in a cookie.
+#Cookies should be encrypted if they contain potentially sensitive information.
+app.secret_key = "secret key"
+
+#Define the upload folder to save images uploaded by the user. 
+
+#app = Flask(__name__)
+
+
 
 # print(stopwords.words('portuguese'))
 # print(__name__)
@@ -46,12 +65,79 @@ def store_user_parameter():
   class_model = build_model()
   class_model.build_all_models(parameter_value_matrix)
   class_model.save_all(modelname)
-  
-  #print(data[classification_list[0]])
-  #return jsonify(data)
+
+
+
+  #print(data[classification_list[0]])  #return jsonify(data)
   return render_template("model_result.html")
   #return render_template("model_result.html")
 
+  #Add Post method to the decorator to allow for form submission. 
+@app.route('/greet', methods=['POST'])
+def submit_file():
+    # print("file submitted")
+    # flash('test')
+    # file = request.files['file_name']
+    # filename = file.filename
+    # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    
+    # flash(full_filename)
+    # return render_template("model_result.html")
+
+    # if request.method == 'GET':
+    #       return render_template("model_result.html")
+
+    if request.method == 'POST':
+      if 'file_name' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+      file = request.files['file_name']
+      if file.filename == '':
+        flash('No file selected for uploading')
+        return redirect(request.url)
+      if file:
+        filename = file.filename  #Use this werkzeug method to secure filename. 
+        #print(os.path.join(app.config['UPLOAD_FOLDER']))
+
+        disk = disk_access()
+        disk.write_file(file, filename)
+        
+        #file.save(os.path.join(os.environ['FILES_FOLDER'],filename))
+        #file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        #getPrediction(filename)
+        label = "class1"
+        print(label)
+        flash(label)
+        #full_filename = filename
+
+        disk = disk_access()
+        full_filename = disk.get_file_full_path(filename)
+        #full_filename = os.path.join(os.environ['FILES_FOLDER'], filename)
+
+        print(full_filename)
+        flash(full_filename)
+        file_type = "embed"
+        return render_template("model_result.html", file_type=file_type)
+
+    #           return redirect("/model_result/upload_file")
+    #           #return render_template("model_result.html")
+    #           #return render_template("model_result_2.html")  
+    #           #return redirect('/model_result/show_file', label=label, full_filename=full_filename)
+    #           #return render_template("model_result_2.html", label=label, full_filename=full_filename)
+
+# @app.route('/model_result/upload_file', methods=['GET'])
+# def show_image():
+#     print("file submitted")
+#     return render_template('model_result.html')
+
+
+# @app.route('/model_result/show_file')
+# def show_image():
+#     print("show image")
+#     # flash(label)
+#     # flash(full_filename)
+#     return render_template("model_result_2.html")
+  
 # @app.route("/model_result", methods=['POST'])
 # @app.route("/model_result", methods=['GET', 'POST'])
 # def model_result():

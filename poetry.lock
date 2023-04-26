@@ -135,6 +135,18 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
+name = "pillow"
+version = "9.5.0"
+description = "Python Imaging Library (Fork)"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-inline-tabs", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
+
+[[package]]
 name = "regex"
 version = "2023.3.23"
 description = "Alternative regular expression module, to replace re."
@@ -253,7 +265,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "839ece1e70469d63ad1ed1552633c1862bee3c50c77444423a766a1e9e4dc3b3"
+content-hash = "3af385998837103d3293ef24c49af135077e7bf6e5d1304a449dc8463994c9f7"
 
 [metadata.files]
 click = []
@@ -267,6 +279,7 @@ joblib = []
 markupsafe = []
 nltk = []
 numpy = []
+pillow = []
 regex = []
 scipy = []
 smart-open = []

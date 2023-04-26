@@ -60,7 +60,7 @@ class build_model():
   def write_to_disk(self, object, modelname, type):
     filename = modelname + type
     disk = disk_access()
-    disk.write(object, filename)
+    disk.write_model(object, filename)
 
   # def save_all(self, parameter_value_list, modelname):
   #   self.write_to_disk(self, object, modelname, type)
