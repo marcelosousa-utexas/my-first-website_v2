@@ -1,7 +1,7 @@
 import os
 #import nltk
 import pickle
-from flask import Flask, render_template, jsonify, request, flash, redirect
+from flask import Flask, render_template, jsonify, request, flash, redirect, send_from_directory
 from database import load_jobs_from_db
 from input_classificator_parameters import build_parameter
 from build_classificator_model import build_model
@@ -16,21 +16,26 @@ from disk import disk_access
 
 #Create an app object using the Flask class. 
 #app = Flask(__name__, static_folder="static")
-app = Flask(__name__)
+#app = Flask(__name__, static_folder="public")
+#app = Flask(__name__ , static_folder='/home/runner/my-first-websitev2/')
 
-#Add reference fingerprint. 
-#Cookies travel with a signature that they claim to be legit. 
-#Legitimacy here means that the signature was issued by the owner of the cookie.
-#Others cannot change this cookie as it needs the secret key. 
-#It's used as the key to encrypt the session - which can be stored in a cookie.
-#Cookies should be encrypted if they contain potentially sensitive information.
+# app = Flask(__name__ , static_folder='/opt/render/project/src/public/uploads')
+app = Flask(__name__ , static_folder='public')
+# UPLOAD_FOLDER = 'public/uploads/'
+
 app.secret_key = "secret key"
+
+
+
+#Define the upload folder to save images uploaded by the user. 
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Define the upload folder to save images uploaded by the user. 
 
 #app = Flask(__name__)
 
-
+# FILES_FOLDER_ENV = 'FILES_FOLDER'
+# FILES_FOLDER = os.environ[FILES_FOLDER_ENV]
 
 # print(stopwords.words('portuguese'))
 # print(__name__)
@@ -74,6 +79,18 @@ def store_user_parameter():
   #return render_template("model_result.html")
 
   #Add Post method to the decorator to allow for form submission. 
+
+#from config import MEDIA_FOLDER
+
+# @app.route('/uploads/<path:filename>')
+# def download_file(filename):
+#     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
+
+
+# @app.route('/files_to_classify/<path:filename>')
+# def download_file(filename):
+#     return send_from_directory(FILES_FOLDER, filename, as_attachment=True)
+
 @app.route('/greet', methods=['POST'])
 def submit_file():
     # print("file submitted")
@@ -102,6 +119,8 @@ def submit_file():
 
         disk = disk_access()
         disk.write_file(file, filename)
+
+        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], "files_to_classify/" ,filename))
         
         #file.save(os.path.join(os.environ['FILES_FOLDER'],filename))
         #file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
@@ -110,21 +129,21 @@ def submit_file():
         print(label)
         flash(label)
         #full_filename = filename
-
+        #full_filename = os.path.join(app.config['UPLOAD_FOLDER'], "files_to_classify/", filename)
         disk = disk_access()
         full_filename = disk.get_file_full_path(filename)
         #full_filename = os.path.join(os.environ['FILES_FOLDER'], filename)
-
-        print(full_filename)
+        #full_filename = "test"
+        print("full_filename: ", full_filename)
         flash(full_filename)
         file_type = "embed"
         return render_template("model_result.html", file_type=file_type)
 
-    #           return redirect("/model_result/upload_file")
-    #           #return render_template("model_result.html")
-    #           #return render_template("model_result_2.html")  
-    #           #return redirect('/model_result/show_file', label=label, full_filename=full_filename)
-    #           #return render_template("model_result_2.html", label=label, full_filename=full_filename)
+        #           return redirect("/model_result/upload_file")
+        #           #return render_template("model_result.html")
+        #           #return render_template("model_result_2.html")  
+        #           #return redirect('/model_result/show_file', label=label, full_filename=full_filename)
+        #           #return render_template("model_result_2.html", label=label, full_filename=full_filename)
 
 # @app.route('/model_result/upload_file', methods=['GET'])
 # def show_image():
