@@ -5,6 +5,7 @@ from flask import Flask, render_template, jsonify, request, flash, redirect, sen
 from database import load_jobs_from_db
 from input_classificator_parameters import build_parameter
 from build_classificator_model import build_model
+from load_classificator_model import load_model
 from disk import disk_access
 
 # nltk.data.path.append(os.getcwd() + os.sep  + "nltk_data")
@@ -78,6 +79,24 @@ def submit_file():
 
 @app.route('/model_result', methods=['POST'])
 def test():
+
+  modelname = 'notas_fiscais'
+  class_model = load_model()
+  class_model.load_all_models(modelname)
+
+  dictionary = class_model.dictionary
+  model_TFIDF = class_model.model_TFIDF
+  index_TFIDF = class_model.index_TFIDF
+  model_LSI =  class_model.model_LSI
+  index_LSI = class_model.index_LSI
+
+
+  # modelo_TFIDF = models.TfidfModel.load('C:/TesteOCR/Python/modelo_TFIDF.tfidf')
+  # modelo_LSI = models.LsiModel.load('C:/TesteOCR/Python/modelo_LSI.lsi')
+            
+  # index_TFIDF = similarities.MatrixSimilarity.load('C:/TesteOCR/Python/matriz_similaridade_TFIDF.index')
+  # index_LSI = similarities.MatrixSimilarity.load('C:/TesteOCR/Python/matriz_similaridade_LSI.index')
+  
   return render_template("model_result.html")
 
 if __name__ == "__main__":  

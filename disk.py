@@ -28,3 +28,12 @@ class disk_access():
     path = os.sep + STATIC_FOLDER + FILE_FOLDER + filename
     path = os.path.normpath(path)    
     return path
+
+  def get_model_absolute_path(self, filename): 
+    path = os.sep + PUBLIC_FOLDER + MODELS_FOLDER + filename
+    path = os.path.normpath(path)    
+    return path    
+
+  # def loadfile(self, object, filename): 
+  #   path = self.get_file_relative_path(filename)
+  #   return object.load(path)
