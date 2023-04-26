@@ -138,13 +138,19 @@ def submit_file():
         print("full_filename: ", full_filename)
         flash(full_filename)
         file_type = "embed"
-        return render_template("model_result.html", file_type=file_type)
+        return render_template("model_result_3.html", file_type=file_type)
+
+@app.route('/test', methods=['POST'])
+def test():
+  return render_template("model_result_4.html")
 
         #           return redirect("/model_result/upload_file")
         #           #return render_template("model_result.html")
         #           #return render_template("model_result_2.html")  
         #           #return redirect('/model_result/show_file', label=label, full_filename=full_filename)
         #           #return render_template("model_result_2.html", label=label, full_filename=full_filename)
+
+
 
 # @app.route('/model_result/upload_file', methods=['GET'])
 # def show_image():

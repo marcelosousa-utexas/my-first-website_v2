@@ -1,5 +1,3 @@
-<!-- import ecommerceImage from 'files_to_classify/oensinodexadrex.pdf';
- -->
 <!doctype html>
 <html >
 <head>
@@ -8,27 +6,10 @@
   <!-- Make it compatible to mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Skin Cancer Lesion Classifier</title>
-  <!-- <link rel="import" href="/files_to_classify/oensinodexadrex.pdf"> -->
+ 
   
 </head>
 
-
-<body style="background: #FFF;">
-
-<h2 style="color:SlateBlue;">Skin Cancer Lesion Classifier</h2><p>
-<h4 style="color:SlateBlue;">Upload an image and click submit</h4>
-
-
-<form method="post" action="greet" enctype="multipart/form-data">
-    <dl>
-	<p style="color:SlateBlue;">
-		<input type="file" name="file_name" autocomplete="off" required>
-	</p>
-    </dl>
-    <p style="color:SlateBlue;">
-	<input type="submit" name="submit" value="Submit">
-    </p>
-</form>
 
   <p style="color:MediumSeaGreen;">
 	{% with messages = get_flashed_messages() %}
@@ -41,11 +22,16 @@
 
         <!-- <embed src="/static/images/oensinodexadrex.pdf" width="500" height="700" type='application/pdf'> -->
 
-
-    
 	  {% endif %}
 	{% endwith %}
   </p>
+
+  <form method="post" action="test" enctype="multipart/form-data">
+    <p style="color:SlateBlue;">
+	<input type="submit" name="submit" value="Submit">
+    </p>
+    
+</form>
 
 
 </body>
