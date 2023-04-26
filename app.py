@@ -12,9 +12,8 @@ from disk import disk_access
 # print(os.getcwd())
 # from nltk.corpus import stopwords
 
-app = Flask(__name__ , static_folder='public')
-app.secret_key = "secret key"
-
+app = Flask(__name__ , static_folder=os.environ['STATIC_FOLDER'])
+app.secret_key = os.environ['SECRET_KEY']
 
 class_par = build_parameter(1,6)
 classification_list, parameter_matrix, inverted_parameter_matrix= class_par.create_parameter_matrix()
@@ -22,14 +21,12 @@ classification_list, parameter_matrix, inverted_parameter_matrix= class_par.crea
 
 @app.route("/")
 def hello_word():
-  #n_classifications, n_parameters
   return render_template("home.html", classifications=classification_list, class_parameters=inverted_parameter_matrix)
-  #return "<p> Hello, world <p>"
 
-@app.route("/api/jobs")
-def list_jobs():
-  results_to_dict = load_jobs_from_db()
-  return jsonify(results_to_dict)
+# @app.route("/api/jobs")
+# def list_jobs():
+#   results_to_dict = load_jobs_from_db()
+#   return jsonify(results_to_dict)
 
 @app.route("/model_result", methods = ['POST'])
 def store_user_parameter():
@@ -72,7 +69,7 @@ def submit_file():
         flash(label)
 
         disk = disk_access()
-        full_filename = disk.get_file_full_path(filename)
+        full_filename = disk.get_file_relative_path(filename)
 
         print("full_filename: ", full_filename)
         flash(full_filename)
@@ -83,43 +80,5 @@ def submit_file():
 def test():
   return render_template("model_result_4.html")
 
-        #           return redirect("/model_result/upload_file")
-        #           #return render_template("model_result.html")
-        #           #return render_template("model_result_2.html")  
-        #           #return redirect('/model_result/show_file', label=label, full_filename=full_filename)
-        #           #return render_template("model_result_2.html", label=label, full_filename=full_filename)
-
-
-
-# @app.route('/model_result/upload_file', methods=['GET'])
-# def show_image():
-#     print("file submitted")
-#     return render_template('model_result.html')
-
-
-# @app.route('/model_result/show_file')
-# def show_image():
-#     print("show image")
-#     # flash(label)
-#     # flash(full_filename)
-#     return render_template("model_result_2.html")
-  
-# @app.route("/model_result", methods=['POST'])
-# @app.route("/model_result", methods=['GET', 'POST'])
-# def model_result():
-#     if request.method == 'POST':
-#         #data = request.method 
-#         #print(data)
-#         return render_template('model_result.html', class_1 = request.form['class_1'])
-      
-#     elif request.method == 'GET':
-#         print('A GET request was made')
-#         #return render_template('model_result.html', model_result=request.form['model_result'])
-
-#     else:
-#         return 'Not a valid request method for this route'
-
-#if __name__ == "app":
 if __name__ == "__main__":  
-  print("hello2")
   app.run(host = '0.0.0.0', debug = True)

@@ -18,13 +18,6 @@ def load_jobs_from_db():
   
   with engine.connect() as connection:
     result = connection.execute(text("select * from jobs"))
-    #results_to_dict = []
     for row in result.all():
       results_to_dict.append(row._asdict())
-    #  results_to_dict.append(dict(row))
-  #print(results_to_dict)
   return results_to_dict
-  #print(results_to_dict)
-    #print(result.all())
-
-print(load_jobs_from_db())
