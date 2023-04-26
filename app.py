@@ -12,34 +12,9 @@ from disk import disk_access
 # print(os.getcwd())
 # from nltk.corpus import stopwords
 
-#Save images to the 'static' folder as Flask serves images from this directory
-
-#Create an app object using the Flask class. 
-#app = Flask(__name__, static_folder="static")
-#app = Flask(__name__, static_folder="public")
-#app = Flask(__name__ , static_folder='/home/runner/my-first-websitev2/')
-
-# app = Flask(__name__ , static_folder='/opt/render/project/src/public/uploads')
-#app = Flask(__name__ , static_folder='public')
-app = Flask(__name__ , static_folder='public/uploads')
-# UPLOAD_FOLDER = 'public/uploads/'
-
+app = Flask(__name__ , static_folder='public')
 app.secret_key = "secret key"
 
-
-
-#Define the upload folder to save images uploaded by the user. 
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-#Define the upload folder to save images uploaded by the user. 
-
-#app = Flask(__name__)
-
-# FILES_FOLDER_ENV = 'FILES_FOLDER'
-# FILES_FOLDER = os.environ[FILES_FOLDER_ENV]
-
-# print(stopwords.words('portuguese'))
-# print(__name__)
 
 class_par = build_parameter(1,6)
 classification_list, parameter_matrix, inverted_parameter_matrix= class_par.create_parameter_matrix()
@@ -73,39 +48,11 @@ def store_user_parameter():
   class_model.build_all_models(parameter_value_matrix)
   class_model.save_all(modelname)
 
-
-
-  #print(data[classification_list[0]])  #return jsonify(data)
   return render_template("model_result.html")
-  #return render_template("model_result.html")
 
-  #Add Post method to the decorator to allow for form submission. 
-
-#from config import MEDIA_FOLDER
-
-# @app.route('/uploads/<path:filename>')
-# def download_file(filename):
-#     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
-
-
-# @app.route('/files_to_classify/<path:filename>')
-# def download_file(filename):
-#     return send_from_directory(FILES_FOLDER, filename, as_attachment=True)
 
 @app.route('/greet', methods=['POST'])
 def submit_file():
-    # print("file submitted")
-    # flash('test')
-    # file = request.files['file_name']
-    # filename = file.filename
-    # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    
-    # flash(full_filename)
-    # return render_template("model_result.html")
-
-    # if request.method == 'GET':
-    #       return render_template("model_result.html")
-
     if request.method == 'POST':
       if 'file_name' not in request.files:
         flash('No file part')
@@ -116,25 +63,17 @@ def submit_file():
         return redirect(request.url)
       if file:
         filename = file.filename  #Use this werkzeug method to secure filename. 
-        #print(os.path.join(app.config['UPLOAD_FOLDER']))
 
         disk = disk_access()
         disk.write_file(file, filename)
 
-        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], "files_to_classify/" ,filename))
-        
-        #file.save(os.path.join(os.environ['FILES_FOLDER'],filename))
-        #file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        #getPrediction(filename)
         label = "class1"
         print(label)
         flash(label)
-        #full_filename = filename
-        #full_filename = os.path.join(app.config['UPLOAD_FOLDER'], "files_to_classify/", filename)
+
         disk = disk_access()
         full_filename = disk.get_file_full_path(filename)
-        #full_filename = os.path.join(os.environ['FILES_FOLDER'], filename)
-        #full_filename = "test"
+
         print("full_filename: ", full_filename)
         flash(full_filename)
         file_type = "embed"
