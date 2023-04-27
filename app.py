@@ -1,10 +1,10 @@
 import os
-import io
+#import io
 #import nltk
 import pickle
 from flask import Flask, render_template, jsonify, request, flash, redirect, make_response, send_from_directory, Response
 from database import load_jobs_from_db
-import pandas as pd
+#import pandas as pd
 from input_classificator_parameters import build_parameter
 from build_classificator_model import build_model
 from load_classificator_model import load_model
@@ -12,7 +12,7 @@ from user_parameters import user
 from file_handle import file_io
 from disk import disk_access
 from run_model import classifier_model
-import csv
+#import csv
 #import json
 #import numpy as np
 
