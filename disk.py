@@ -34,6 +34,11 @@ class disk_access():
     path = os.path.normpath(path)    
     return path    
 
+  def get_file_absolute_path(self, filename): 
+    path = os.sep + PUBLIC_FOLDER + FILE_FOLDER + filename
+    path = os.path.normpath(path)    
+    return path       
+
   # def loadfile(self, object, filename): 
   #   path = self.get_file_relative_path(filename)
   #   return object.load(path)

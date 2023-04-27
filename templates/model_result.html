@@ -22,7 +22,48 @@
 
         <h2 style="color:SlateBlue;">ok!</h2><p>
 
-</form>
+         <form action="/saver_result" method = "POST">
+         <table>
+            <!-- <tr>
+               <td align="center"><b></b></td>
+               <td align="center"><b>Classication Name</b></td>
+               <td align="center"><b>Classication Name</b></td>
+               <td align="center"><b>Classication Name</b></td>
+            </tr> -->
+            <tr>
+              <td></td>
+              {% for classification in classifications %}
+                <!-- <td>{{ loop.index }}</td> -->
+                  {% include 'classification_item.html' %}
+                <!-- </tr> -->
+              {% endfor %}
+            </tr>
+
+            <tr>
+              <td colspan=6>
+                <div id="my_box">
+                </div>
+              </td>
+            </tr>           
+        
+              {% for class_parameter in class_parameters %}
+                <tr>           
+                  <td>{{ loop.index }}</td>
+                  {% for parameter in class_parameter %}
+                      <!-- <tr> -->
+                      {% include 'parameter_item.html' %}
+                      <!-- </tr> -->
+                  {% endfor %}
+                </tr> 
+              {% endfor %}
+            <tr>
+              <td><input type="submit" value="Submit" /></td>
+               <!-- <td colspan={{class_parameters|length + 1}} align="center">
+                  <input type="submit" value="Submit" />
+               </td> -->
+            </tr>           
+          </table>
+          </form>
 
 
 </body>

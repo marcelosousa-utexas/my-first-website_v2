@@ -11,6 +11,7 @@ SQLAlchemy = "^2.0.9"
 nltk = "^3.8.1"
 gensim = "^4.3.1"
 Pillow = "^9.5.0"
+pandas = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 
