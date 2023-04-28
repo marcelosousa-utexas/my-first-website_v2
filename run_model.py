@@ -8,9 +8,20 @@ from nltk import regexp_tokenize
 
 
 
+
 class classifier_model():
   
-  def __init__(self, data, dictionary, model_TFIDF, index_TFIDF, model_LSI, index_LSI):
+  def __init__(self):
+    self.data = object
+    self.dictionary = object
+    self.model_TFIDF = object
+    self.index_TFIDF = object
+    self.model_LSI = object
+    self.index_LSI = object
+    self.model_result = []
+    self.model_header = []
+
+  def set_model_parameters(self, data, dictionary, model_TFIDF, index_TFIDF, model_LSI, index_LSI):
     self.data = data
     self.dictionary = dictionary
     self.model_TFIDF = model_TFIDF
@@ -18,6 +29,18 @@ class classifier_model():
     self.model_LSI = model_LSI
     self.index_LSI = index_LSI
 
+  def set_model_result(self, model_result):
+    self.model_result = model_result
+
+  def get_model_result(self):
+    return self.model_result
+
+  def set_model_header(self, model_header):
+    self.model_header = model_header
+
+  def get_model_header(self):
+    return self.model_header
+  
   def start_classifier_model(self):
 
         model_result = []
@@ -78,4 +101,16 @@ class classifier_model():
                 
                         find_classification = [page_number, document_type, best_fit_tfidf_model,tfidf_alert, best_fit_lsi_model, lsi_alert]                        
                         model_result.append(find_classification)
-        return model_result
+
+        #data = [['16', 4, 0.832574, 'ok', 0.95689666, 'ok'], ['17', 4, 0.7490662, 'ok', 0.9434082, 'ok'], ['18', 3, 0.7548005, 'ok', 0.88454604, 'ok']]
+        
+        #data_dict = [dict(zip(['col1', 'col2', 'col3', 'col4', 'col5', 'col6'], row)) for row in model_result]
+        #import json
+        #data_json = json.dumps(data_dict)
+        
+        #print(data_dict)
+        #print("data_json:", data_json)
+        model_header = ['Page Number','Classification', 'Model 1 Prediction', 'Model 1 Alert', 'Model 2 Prediction', 'Model 2 Alert']
+        self.set_model_result(model_result)
+        self.set_model_header(model_header)
+        #ee

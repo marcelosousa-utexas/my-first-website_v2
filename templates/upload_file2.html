@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>CLASSIFICATION PARAMETERS</h3>
+<hr>
+<h4>Upload a pdf or text file and click submit</h4>
+&nbsp;
+
+
+<form method="post" action="show_file" enctype="multipart/form-data">
+    <dl>
+	<p>
+		<input type="file" name="file_name" autocomplete="off" required>
+	</p>
+    </dl>
+    <p>
+	<input type="submit" name="submit" value="Submit">
+    </p>
+</form>
+
+  <p>
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+        Diagnosis for the following image is: <u><h3>{{ messages[0] }}</h3></u><br>
+        <embed src="{{ messages[1] }}" width="500" height="700" type='application/pdf'>
+	  {% endif %}
+	{% endwith %}
+  </p>
+
+
+</body>
+      {% endblock %}
+      {% block scripts %}
+      {% endblock %}

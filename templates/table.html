@@ -1,0 +1,26 @@
+<form action="/get_csv" method="POST">
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>City</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in parameters %}
+    <tr>
+      <td name = "name">{{ data.name }}</td>
+      <input type="hidden" name="name"  value=" {{ data.name }}"/>
+      <td name = "age">{{ data.age }}</td>
+      <input type="hidden" name="age"  value=" {{ data.age }}"/>
+      <td name = "city">{{ data.city }}</td>
+      <input type="hidden" name="city"  value=" {{ data.city }}"/>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+  <button type="submit">Extract Table</button>
+</form>
