@@ -1,5 +1,9 @@
-<!doctype html>
-<html >
+{% extends "basic_table.html" %}
+
+<!DOCTYPE html>
+<html>
+   <html>
+      <head>
          <title>Student Registration Form</title>
          <style type="text/css">
             h3
@@ -13,57 +17,55 @@
               height: 5px;
               object-fit: cover;              
             }
+
+      
+    </style>           
+
            
          </style>
       </head>
       <body>
          <h3>CLASSIFICATION PARAMETERS</h3>
+         <hr>
 
 
-        <h2 style="color:SlateBlue;">ok!</h2><p>
-
-         <form action="/saver_result" method = "POST">
-         <table>
-            <!-- <tr>
-               <td align="center"><b></b></td>
-               <td align="center"><b>Classication Name</b></td>
-               <td align="center"><b>Classication Name</b></td>
-               <td align="center"><b>Classication Name</b></td>
-            </tr> -->
+      {% block content %}
+        <table id="data" class="table table-striped">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Page Number</th>
+            <th>Classification </th>
+            <th>Model 1 Prediction</th>
+            <th>Model 1 Alert</th>     
+            <th>Model 2 Prediction</th>
+            <th>Model 2 Alert</th>   
+      </thead>
+        <tbody>
+          {% for data in model_result %}
+            {% for row in data %}
             <tr>
-              <td></td>
-              {% for classification in classifications %}
-                <!-- <td>{{ loop.index }}</td> -->
-                  {% include 'classification_item.html' %}
-                <!-- </tr> -->
+              {% for cell in row %}
+                {% if loop.index == 3 %}
+                  <td>{{ classification[cell] }}</td>
+                {% else %}
+                  <td>{{ cell }}</td>
+                {% endif %}
               {% endfor %}
             </tr>
-
-            <tr>
-              <td colspan=6>
-                <div id="my_box">
-                </div>
-              </td>
-            </tr>           
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+        </table>
+        <form action="/get_csv" method="POST">
+          <button type="submit">Extract Table</button>
+        </form>
+      {% endblock %}
+      {% block scripts %}
+        <script>
+          $(document).ready(function () {
+            $('#data').DataTable();
+          });
+        </script>
+      {% endblock %}
         
-              {% for class_parameter in class_parameters %}
-                <tr>           
-                  <td>{{ loop.index }}</td>
-                  {% for parameter in class_parameter %}
-                      <!-- <tr> -->
-                      {% include 'parameter_item.html' %}
-                      <!-- </tr> -->
-                  {% endfor %}
-                </tr> 
-              {% endfor %}
-            <tr>
-              <td><input type="submit" value="Submit" /></td>
-               <!-- <td colspan={{class_parameters|length + 1}} align="center">
-                  <input type="submit" value="Submit" />
-               </td> -->
-            </tr>           
-          </table>
-          </form>
-
-
-</body>

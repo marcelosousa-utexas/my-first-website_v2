@@ -1,42 +1,23 @@
-<!doctype html>
-<html >
-         <title>Student Registration Form</title>
-         <style type="text/css">
-            h3
-            {font-family: Calibri; font-size: 22pt; font-style: normal; font-weight: bold; color:SlateBlue;
-            text-align: left; text-decoration: underline }
-            table{font-family: Calibri; color:white; font-size: 11pt; font-style: normal;
-            text-align:; background-color: SlateBlue; border-collapse: collapse; border: 2px solid navy}
-            table.inner{border: 0px}
-            div {
-              width: 100%;
-              height: 5px;
-              object-fit: cover;              
-            }
-           
-         </style>
-      </head>
-      <body>
-         <h3>CLASSIFICATION PARAMETERS</h3>
+{% extends "basic_table.html" %}
 
+{% block content %}
+<h3>CLASSIFICATION PARAMETERS</h3>
+<hr>
+<h4>Confirm the uploaded file and click submit</h4><p>
 
-  <p style="color:SlateBlue;">
+  <p>
 	{% with messages = get_flashed_messages() %}
 	  {% if messages %}
-        <!-- <h2> Diagnosis for the following image is: {{ messages[0] }} </h2> -->
-        <h2 style="color:SlateBlue;">Confirm the uploaded file and click submit</h2><p>
-        <!-- <img src="{{ messages[1] }}" width="300", height="225"> -->
         <embed src="{{ messages[1] }}" width="500" height="700" type='application/pdf'>
-        <!-- <embed src="/public/uploads/files_to_classify/oensinodexadrex.pdf" width="500" height="700" type='application/pdf'> -->
-        <!-- <img src="{{ url_for('static', filename='images/logo.png', _external=True) }}"> -->
-
-        <!-- <embed src="/static/images/oensinodexadrex.pdf" width="500" height="700" type='application/pdf'> -->
-
 	  {% endif %}
 	{% endwith %}
   </p>
 
+
+
   <form method="post" action="model_result" enctype="multipart/form-data">
-    <p style="color:SlateBlue;">
-	<input type="submit" name="submit" value="Submit">
-    </p>
+    <p><input type="submit" name="submit" value="Submit"></p>
+      {% endblock %}
+      {% block scripts %}
+      {% endblock %}
+

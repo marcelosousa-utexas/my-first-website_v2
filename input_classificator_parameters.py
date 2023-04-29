@@ -1,8 +1,8 @@
 class build_parameter():
   
-  def __init__(self, number_of_classifications, number_of_parameters):
-    self.number_of_classifications = number_of_classifications
-    self.number_of_parameters = number_of_parameters
+  def __init__(self):
+    self.number_of_classifications = 6
+    self.number_of_parameters = 6
     self.classification_name_list = []
     self.parameter_name_matrix = []
 
