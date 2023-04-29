@@ -27,34 +27,15 @@ class_par = build_parameter()
 class_save_model = build_model()
 class_load_model = load_model()
 class_run_model = classifier_model()
-
-#print(sqlalchemy.__version__)  
+class_par.number_of_classifications = 6
+class_par.number_of_parameters = 6
+class_par.classification_name_list = []
+class_par.parameter_name_matrix = []
+classification_list, parameter_matrix, inverted_parameter_matrix = class_par.create_parameter_matrix()
 
 @app.route("/")
 def init():
-  class_par.number_of_classifications
-  class_par.parameter_name_matrix
-  classification_list, parameter_matrix, inverted_parameter_matrix = class_par.create_parameter_matrix()
   return render_template("home.html", classifications=classification_list, class_parameters=inverted_parameter_matrix)
-
-# @app.route("/api/jobs")
-# def list_jobs():
-#   results_to_dict = load_jobs_from_db()
-#   return jsonify(results_to_dict)
-
-# @app.route('/')
-# def index():
-#     files = os.listdir(app.config['UPLOAD_PATH'])
-#     return render_template('drag_drop.html', files=files)
-
-# @app.route("/upload",methods=["POST","GET"])
-# def upload():
-#     if request.method == 'POST':
-#         file = request.files['file']
-#         filename = secure_filename(file.filename)
-#         print(filename)
-#         msg = 'Success Uplaod'    
-#     return jsonify(msg)
 
 @app.route('/upload_files', methods=['POST'])
 def upload_files():
@@ -84,64 +65,29 @@ def store_user_parameter():
   model_matrix = class_par.show_up(class_par.parameter_name_matrix, data)
   #print(model_matrix)
 
-  # parameter_value_matrix = []
-  # parameter_value_matrix.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
-  # parameter_value_matrix.append([])
 
   lista_elementos_mais_comuns = []
-  lista_elementos_mais_comuns.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) 
-  lista_elementos_mais_comuns.append(['lancamento','evento','especie','contabil','orcamentaria','decreto']) 
-  lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) 
-  lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
+  lista_elementos_mais_comuns.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
+  lista_elementos_mais_comuns.append(['NFS-e','verificacao','prestador','tomador','ISS','prefeitura'])  #NFm
   lista_elementos_mais_comuns.append(['autorizacao','liquidacao','pagamento','despesa','ordenador','extenso']) #autorizacao e liquidacao da despesa
-  lista_elementos_mais_comuns.append(['NFS-e','verificacao','prestador','tomador','ISS','prefeitura'])  #autorizacao e liquidacao da despesa
+  lista_elementos_mais_comuns.append(['lancamento','evento','especie','contabil','orcamentaria','decreto']) #NL
+  lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
+  lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) #OB
   lista_elementos_mais_comuns.append([])
 
+
+  class_par.classification_name_list = ['NF','NFm','Aut. e liq.da despesa', 'NL', 'PP', 'OB']
+  
   parameter_value_matrix = lista_elementos_mais_comuns
   
   modelname = 'notas_fiscais'
   class_user.model_name = modelname
 
-
-  
-  #class_model.build_all_models(parameter_value_matrix)
-  class_save_model.build_all_models(lista_elementos_mais_comuns)
+  class_save_model.build_all_models(parameter_value_matrix)
   class_save_model.save_all(modelname)
 
   return render_template("upload_file2.html")
 
-
-# @app.route('/show_file', methods=['POST'])
-# def submit_file():
-#     if request.method == 'POST':
-#       if 'file_name' not in request.files:
-#         flash('No file part')
-#         return redirect(request.url)
-#       file = request.files['file_name']
-#       if file.filename == '':
-#         flash('No file selected for uploading')
-#         return redirect(request.url)
-#       if file:
-#         filename = file.filename  #Use this werkzeug method to secure filename. 
-        
-#         class_user.file_type = "txt"
-        
-#         disk = disk_access()
-#         disk.write_file(file, filename)
-
-#         label = "class1"
-#         print(label)
-#         flash(label)
-
-#         disk = disk_access()
-#         relative_file_path = disk.get_file_relative_path(filename)
-#         full_file_path = disk.get_file_absolute_path(filename)
-#         class_user.fullpath = full_file_path
-
-#         print("relative_file_path: ", relative_file_path)
-#         flash(relative_file_path)
-
-#         return render_template("confirm_file.html")
 
 @app.route('/model_result', methods=['POST'])
 def test():
@@ -168,12 +114,13 @@ def extract():
     # Create a CSV file from the data
     csv_data = []
     header = class_run_model.get_model_header()
-    data = class_run_model.get_model_result()
-    for row in data:
-      data_row = []
-      for cell in row:
-        data_row.append(cell)
-      csv_data.append(data_row)
+    model_result = class_run_model.get_model_result()
+    for file in model_result:
+      for row in file:
+        data_row = []
+        for cell in row:
+          data_row.append(cell)
+        csv_data.append(data_row)
     csv_file = io.StringIO()
     writer = csv.writer(csv_file)
     writer.writerow(header)
