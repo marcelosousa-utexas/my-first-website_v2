@@ -61,7 +61,7 @@ def upload_files():
 def store_user_parameter():
   #data = request.args
   data = request.form
-  print("upload_file: ", data)
+  #print("upload_file: ", data)
   model_matrix = class_par.show_up(class_par.parameter_name_matrix, data)
   #print(model_matrix)
 
@@ -86,11 +86,11 @@ def store_user_parameter():
   class_save_model.build_all_models(parameter_value_matrix)
   class_save_model.save_all(modelname)
 
-  return render_template("upload_file2.html")
+  return render_template("upload_file.html")
 
 
 @app.route('/model_result', methods=['POST'])
-def test():
+def model_result():
 
     
   class_load_model.load_all_models(class_user.model_name)
