@@ -71,26 +71,18 @@
           $(function () {
           
               // Start counting from the third row
-              var counter = 2;
-              // var jinja = "{{ classifications }}";
-              // console.log(jinja.length);
-              var name = {{ classifications|tojson }};
-              console.log(name.length);
+              var n_classifications = {{ classifications|tojson }};
+              var counter =  "{{ numParams}}";
+              console.log(counter);
             
           
               $("#insertRow").on("click", function (event) {
                   event.preventDefault();
           
-                  // var jinja2 = "{{ classifications }}";
-                  // console.log(jinja2.length);
-                  var n_classifications = {{ classifications|tojson }};
-                  // var n_classifications
-                  // console.log(name2);     
-                  // console.log(name2.length);     
-                  // console.log("Hello, world!");
-                  // console.log("{{ classifications }}");
+                  
                   var newRow = $("<tr>");
                   var cols = '';
+                  counter++;
           
                   // Table columns
                   cols += '<th>' + counter + '</th>';
@@ -106,8 +98,6 @@
                   // Insert the row inside a table
                   $("table").append(newRow);
           
-                  // Increase counter after each row insertion
-                  counter++;
               });
           
               // Remove row when delete btn is clicked

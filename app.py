@@ -30,7 +30,7 @@ class_run_model = classifier_model()
 
 @app.route("/")
 def init():
-  return render_template("home2.html")
+  return render_template("home0_v2.html")
 
 @app.route('/new_load_model', methods=['POST'])
 def new_load_model():
@@ -40,7 +40,7 @@ def new_load_model():
         if option[0].__contains__('new_model'):
           print('new_model')
           class_user.set_new_model(True)
-          return render_template('new_model_n_parameters.html')
+          return render_template('new_model_n_parameters2.html')
         elif option[0].__contains__('load_model'):
           print('load_model')
           class_user.set_new_model(False)
@@ -59,7 +59,7 @@ def n_parameters():
       class_par.parameter_name_matrix = []
       classification_list, parameter_matrix, inverted_parameter_matrix = class_par.create_parameter_matrix()
       # Do something with the numParams and numClass values
-      return render_template("new_model_define_parameters6.html", classifications=classification_list, class_parameters=inverted_parameter_matrix)
+      return render_template("new_model_define_parameters6.html", classifications=classification_list, numParams = class_par.get_number_of_parameters(), class_parameters=inverted_parameter_matrix)
 
 
 @app.route("/store_user_parameter", methods = ['POST'])

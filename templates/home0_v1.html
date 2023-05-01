@@ -1,0 +1,65 @@
+{% extends "basic_table.html" %}
+
+      {% block content %}
+
+      <form action="/new_load_model" method = "POST">
+        <fieldset class="row mb-3">
+          <legend class="col-form-label col-sm-2 pt-0">Input:</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="file_type" id="gridRadios1" value="option1" checked>
+              <label class="form-check-label" for="gridRadios1">
+                Plain text
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="file_type" id="gridRadios2" value="option2">
+              <label class="form-check-label" for="gridRadios2">
+                Text file (.txt)
+              </label>
+            </div>
+            <div class="form-check disabled">
+              <input class="form-check-input" type="radio" name="file_type" id="gridRadios3" value="option3">
+              <label class="form-check-label" for="gridRadios3">
+                Searchable PDF file (OCR-processed)
+              </label>
+            </div>
+            <div class="form-check disabled">
+              <input class="form-check-input" type="radio" name="file_type" id="gridRadios4" value="option4" disabled>
+              <label class="form-check-label" for="gridRadios4">
+                No searchable PDF file (no OCR) 
+              </label>
+            </div>            
+          </div>
+        </fieldset>    
+
+        <fieldset class="row mb-3">
+          <legend class="col-form-label col-sm-2 pt-0">Input:</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="single_multiple_class" id="gridRadios1" value="option1" checked>
+              <label class="form-check-label" for="gridRadios1">
+                One classification per file
+              </label>
+            </div>
+            <div class="form-check-inline">
+              <input class="form-check-input" type="radio" name="single_multiple_class" id="gridRadios2" value="option2">
+              <label class="form-check-label" for="gridRadios2">
+                Multiple classifications per file
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" required id="inlineRadio1" value="new_model">
+              <label class="form-check-label" for="inlineRadio1">New model</label>  
+            </div>
+        </fieldset>  
+        
+        <!-- </div> -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% endblock %}
+      {% block scripts %}
+        <script>
+          $(document).ready(function () {
+            $('#data').DataTable();
+          });
+        </script>
+      {% endblock %}
+   </html>
