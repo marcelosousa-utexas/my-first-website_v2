@@ -2,7 +2,7 @@ import os
 import io
 #import nltk
 #import pickle
-from flask import Flask, render_template, request, flash, make_response, jsonify, redirect
+from flask import Flask, render_template, request, flash, make_response, jsonify, redirect, url_for
 #from database import load_jobs_from_db
 from input_classificator_parameters import build_parameter
 from build_classificator_model import build_model
@@ -12,6 +12,7 @@ import disk
 from run_model import classifier_model
 import csv
 from werkzeug.utils import secure_filename
+from file_handle import file_io
 
 FILE_DIR = os.path.normpath(disk.PUBLIC_FOLDER + disk.FILE_FOLDER)
 
@@ -27,10 +28,12 @@ class_par = build_parameter()
 class_save_model = build_model()
 class_load_model = load_model()
 class_run_model = classifier_model()
+class_file_io = file_io("")
+
 
 @app.route("/")
 def init():
-  return render_template("home0_v2.html")
+  return render_template("home2.html")
 
 @app.route('/new_load_model', methods=['POST'])
 def new_load_model():
@@ -80,9 +83,18 @@ def store_user_parameter():
     lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
     lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) #OB
     lista_elementos_mais_comuns.append([])
-  
+
+    lista_elementos_mais_comuns = []
+    lista_elementos_mais_comuns.append(['edital','licitacao','supensao','concurso']) #SEACOMP
+    lista_elementos_mais_comuns.append(['pessoal','aposentadoria','beneficio','salario'])  #SEFIPE
+    lista_elementos_mais_comuns.append(['auditoria','fiscalizacao','regularidade','lei']) #SEAUD
+    lista_elementos_mais_comuns.append(['contas','governo','gestao','fiscal']) #SEMAG
+    lista_elementos_mais_comuns.append(['contas','tomada','prestacao','regular']) #SECONT
+    lista_elementos_mais_comuns.append([])
+    
   
     class_par.classification_name_list = ['NF','NFm','Aut. e liq.da despesa', 'NL', 'PP', 'OB']
+    class_par.classification_name_list = ['SEACOMP','SEFIPE', 'SEAUD', 'SEMAG', 'SECONT']
     
     parameter_value_matrix = lista_elementos_mais_comuns
     
@@ -92,8 +104,34 @@ def store_user_parameter():
     class_save_model.build_all_models(parameter_value_matrix)
     class_save_model.save_all(modelname)
   
-    return render_template("upload_file.html")
+    return render_template("home0_v2.html")        
+    #return render_template("upload_file.html")
 
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if request.form:
+      fileType = request.form.get('file_type')
+      singleMultipleClassif = request.form.get('single_multiple_class')
+      if fileType == 'plain_text':
+        return render_template("text_message_box.html")
+      
+      else:
+          
+        print(fileType)
+        print(singleMultipleClassif)
+
+        class_file_io.set_file_type(fileType)
+        class_file_io.set_single_multiple_class(singleMultipleClassif)
+  
+  
+        #class_file_io.switch_file_type.get(fileType, class_file_io.process_unknown_file_type)()
+        #class_file_io.switch_single_multiple_class.get(singleMultipleClassif, class_file_io.process_unknown_classif)()
+    
+  
+        return render_template("upload_file.html")
+    
+  
 @app.route('/upload_files', methods=['POST'])
 def upload_files():
     uploaded_file = request.files['file']
@@ -114,7 +152,25 @@ def upload_files():
         class_user.add_file(full_file_path)
     return '', 204
 
-@app.route('/model_result', methods=['POST'])
+@app.route('/upload_plain_text', methods=['POST'])
+def upload_plain_text():
+    # Get the text from the textarea input
+    if request.form:
+      text = request.form['scroll-box']
+      filename = 'plain_text.txt'
+      file_ext = os.path.splitext(filename)[1]
+      full_file_path = os.path.join(app.config['UPLOAD_PATH'], filename)
+
+      # Write the text to a file on the server
+      with open(full_file_path, 'w') as file:
+          file.write(text)
+      class_user.set_type(file_ext)
+      class_user.add_file(full_file_path)
+      
+      # Return a response to the client
+      return redirect(url_for('model_result'))
+
+@app.route('/model_result', methods=['GET','POST'])
 def model_result():
 
     
@@ -127,9 +183,8 @@ def model_result():
   index_LSI = class_load_model.index_LSI
 
   class_run_model.set_model_parameters(class_user.get_files(), dictionary, model_TFIDF, index_TFIDF, model_LSI, index_LSI)
-  class_run_model.start_classifier_model()
+  class_run_model.start_classifier_model(class_file_io.get_file_type(), class_file_io.get_single_multiple_class())
   model_result = class_run_model.get_model_result()
-  #print(model_result)
 
   return render_template("model_result.html", classification=class_par.classification_name_list, model_result=model_result) 
 

@@ -42,14 +42,17 @@ class classifier_model():
   def get_model_header(self):
     return self.model_header
   
-  def start_classifier_model(self):
+  def start_classifier_model(self, fileType, single_multiple_class):
 
+    
     model_result = []
     for each_file in self.files:
     
       class_data = file_io(each_file)
-      data = class_data.dispatch_filetype()
-    
+      #data = class_data.dispatch_filetype()
+
+      data = class_data.switch_file_type.get(fileType, class_data.process_unknown_file_type)()
+      #class_file_io.switch_single_multiple_class.get(singleMultipleClassif, class_file_io.process_unknown_classif)()      
       model_result_each_file = []
       data = normalize('NFKD', data).encode('ASCII','ignore').decode('ASCII')
       data = re.split(chr(12), data)

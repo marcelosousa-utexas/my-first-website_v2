@@ -1,0 +1,16 @@
+{% extends "basic_table.html" %}
+
+      {% block content %}
+
+      <form method="post" action="/upload_plain_text" enctype="multipart/form-data">
+          <textarea class="scroll-box form-control" name="scroll-box" id="scroll-box" placeholder = "Copy and paste your text here (you can use Ctrl + C and Ctrl + V)" required></textarea>
+          <dl>
+          </dl>
+          <p>
+      	   <button type="submit" class="btn btn-primary">Submit</button>
+          </p>
+      </form>
+      
+      {% endblock %}
+      {% block scripts %}
+      {% endblock %}
