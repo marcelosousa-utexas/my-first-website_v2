@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- This script got from frontendfreecode.com -->
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+<body>
+
+                    <form action="/store_user_parameter" method = "POST">
+                     <table id="data" class="table table-striped">
+                        <tr>
+                        <td></td>
+                        {% for classification in classifications %}
+                            <td align="left"><input type="text" placeholder="{{classification}}" name="{{classification}}" class="form-control"/></td>
+                        {% endfor %}              
+                        </tr>    
+                      <tr>
+                        <td colspan={{class_parameters|length}}>
+                          <div id="my_box">
+                          </div>
+                        </td>
+                      </tr>           
+                  
+                        {% for class_parameter in class_parameters %}
+                          <tr>           
+                            <td>{{ loop.index }}</td>
+                            {% for parameter in class_parameter %}
+                                <td align="left"><input type="text" placeholder="{{parameter}}" name="{{parameter}}" class="form-control"/></td>
+                            {% endfor %}
+                          </tr> 
+                        {% endfor %}
+               
+                      </tbody>
+                      </table>
+
+                    <!-- Add rows button-->
+                    <a class="btn btn-primary rounded-0 btn-block" id="insertRow" href="#">Add new row</a>
+
+
+<input type="submit" value="Submit">
+<input type="button" value="Reset">
+
+</form>
+<script>
+$(function () {
+
+    // Start counting from the third row
+    var counter = 2;
+    // var jinja = "{{ classifications }}";
+    // console.log(jinja.length);
+    var name = {{ classifications|tojson }};
+    console.log(name.length);
+  
+
+    $("#insertRow").on("click", function (event) {
+        event.preventDefault();
+
+        // var jinja2 = "{{ classifications }}";
+        // console.log(jinja2.length);
+        var n_classifications = {{ classifications|tojson }};
+        // var n_classifications
+        // console.log(name2);     
+        // console.log(name2.length);     
+        // console.log("Hello, world!");
+        // console.log("{{ classifications }}");
+        var newRow = $("<tr>");
+        var cols = '';
+
+        // Table columns
+        cols += '<th scrope="row">' + counter + '</th>';
+
+        for (var j = 0; j< n_classifications.length; j++) {
+           cols += '<td><input class="form-control rounded-0" type="text" name="' + n_classifications[j] + '_parameter_' + counter + '" placeholder="' + n_classifications[j] + '_parameter_' + counter + '"></td>';
+        }  
+        cols += '<td><button class="btn btn-danger rounded-0" id ="deleteRow"><i class="fa fa-trash"></i></button</td>';
+
+        // Insert the columns inside a row
+        newRow.append(cols);
+
+        // Insert the row inside a table
+        $("table").append(newRow);
+
+        // Increase counter after each row insertion
+        counter++;
+    });
+
+    // Remove row when delete btn is clicked
+    $("table").on("click", "#deleteRow", function (event) {
+        $(this).closest("tr").remove();
+        counter -= 1
+    });
+});
+</script>
+
+</body>
+</html>

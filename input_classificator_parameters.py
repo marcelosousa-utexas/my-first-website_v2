@@ -6,6 +6,18 @@ class build_parameter():
     self.classification_name_list = []
     self.parameter_name_matrix = []
 
+  def set_number_of_classifications(self, number_of_classifications):
+    self.number_of_classifications = number_of_classifications
+
+  def get_number_of_classifications(self):
+    return self.number_of_classifications
+  
+  def set_number_of_parameters(self, number_of_parameters):
+    self.number_of_parameters = number_of_parameters
+
+  def get_number_of_parameters(self):
+    return self.number_of_parameters
+  
   def create_parameter_matrix(self):
     for i in range(0, self.number_of_classifications):
       class_text = "class_" + str(i + 1)

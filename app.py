@@ -27,15 +27,72 @@ class_par = build_parameter()
 class_save_model = build_model()
 class_load_model = load_model()
 class_run_model = classifier_model()
-class_par.number_of_classifications = 6
-class_par.number_of_parameters = 6
-class_par.classification_name_list = []
-class_par.parameter_name_matrix = []
-classification_list, parameter_matrix, inverted_parameter_matrix = class_par.create_parameter_matrix()
 
 @app.route("/")
 def init():
-  return render_template("home.html", classifications=classification_list, class_parameters=inverted_parameter_matrix)
+  return render_template("home2.html")
+
+@app.route('/new_load_model', methods=['POST'])
+def new_load_model():
+    if request.form:
+      option = request.form.getlist('inlineRadioOptions')
+      if len(option) > 0:
+        if option[0].__contains__('new_model'):
+          print('new_model')
+          class_user.set_new_model(True)
+          return render_template('new_model_n_parameters.html')
+        elif option[0].__contains__('load_model'):
+          print('load_model')
+          class_user.set_new_model(False)
+          return render_template("load_model_n_parameters.html") 
+        else:
+          return "Invalid option", 400
+  
+@app.route("/n_parameters", methods=['POST'])
+def n_parameters():
+    if request.form:
+      numClass = request.form.get('numClass')
+      numParams = request.form.get('numParams')
+      class_par.set_number_of_classifications(int(numClass))
+      class_par.set_number_of_parameters(int(numParams))
+      class_par.classification_name_list = []
+      class_par.parameter_name_matrix = []
+      classification_list, parameter_matrix, inverted_parameter_matrix = class_par.create_parameter_matrix()
+      # Do something with the numParams and numClass values
+      return render_template("new_model_define_parameters6.html", classifications=classification_list, class_parameters=inverted_parameter_matrix)
+
+
+@app.route("/store_user_parameter", methods = ['POST'])
+def store_user_parameter():
+  if request.form:
+    #data = request.args
+    data = request.form
+    print("parameter_data : ", data)
+    model_matrix = class_par.show_up(class_par.parameter_name_matrix, data)
+    #print(model_matrix)
+  
+  
+    lista_elementos_mais_comuns = []
+    lista_elementos_mais_comuns.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
+    lista_elementos_mais_comuns.append(['NFS-e','verificacao','prestador','tomador','ISS','prefeitura'])  #NFm
+    lista_elementos_mais_comuns.append(['autorizacao','liquidacao','pagamento','despesa','ordenador','extenso']) #autorizacao e liquidacao da despesa
+    lista_elementos_mais_comuns.append(['lancamento','evento','especie','contabil','orcamentaria','decreto']) #NL
+    lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
+    lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) #OB
+    lista_elementos_mais_comuns.append([])
+  
+  
+    class_par.classification_name_list = ['NF','NFm','Aut. e liq.da despesa', 'NL', 'PP', 'OB']
+    
+    parameter_value_matrix = lista_elementos_mais_comuns
+    
+    modelname = 'notas_fiscais'
+    class_user.model_name = modelname
+  
+    class_save_model.build_all_models(parameter_value_matrix)
+    class_save_model.save_all(modelname)
+  
+    return render_template("upload_file.html")
 
 @app.route('/upload_files', methods=['POST'])
 def upload_files():
@@ -56,38 +113,6 @@ def upload_files():
           class_user.set_type(file_ext)
         class_user.add_file(full_file_path)
     return '', 204
-
-@app.route("/upload", methods = ['POST'])
-def store_user_parameter():
-  #data = request.args
-  data = request.form
-  #print("upload_file: ", data)
-  model_matrix = class_par.show_up(class_par.parameter_name_matrix, data)
-  #print(model_matrix)
-
-
-  lista_elementos_mais_comuns = []
-  lista_elementos_mais_comuns.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
-  lista_elementos_mais_comuns.append(['NFS-e','verificacao','prestador','tomador','ISS','prefeitura'])  #NFm
-  lista_elementos_mais_comuns.append(['autorizacao','liquidacao','pagamento','despesa','ordenador','extenso']) #autorizacao e liquidacao da despesa
-  lista_elementos_mais_comuns.append(['lancamento','evento','especie','contabil','orcamentaria','decreto']) #NL
-  lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
-  lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) #OB
-  lista_elementos_mais_comuns.append([])
-
-
-  class_par.classification_name_list = ['NF','NFm','Aut. e liq.da despesa', 'NL', 'PP', 'OB']
-  
-  parameter_value_matrix = lista_elementos_mais_comuns
-  
-  modelname = 'notas_fiscais'
-  class_user.model_name = modelname
-
-  class_save_model.build_all_models(parameter_value_matrix)
-  class_save_model.save_all(modelname)
-
-  return render_template("upload_file.html")
-
 
 @app.route('/model_result', methods=['POST'])
 def model_result():

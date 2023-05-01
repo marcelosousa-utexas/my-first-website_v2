@@ -1,0 +1,22 @@
+{% extends "basic_table.html" %}
+
+      {% block content %}
+
+      <form action="/new_load_model" method = "POST">
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" required id="inlineRadio1" value="new_model">
+          <label class="form-check-label" for="inlineRadio1">New model</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" required id="inlineRadio2" value="load_model">
+          <label class="form-check-label" for="inlineRadio2">Load existing model</label>
+        </div>
+        <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% endblock %}
+      {% block scripts %}
+      {% endblock %}
+   </html>

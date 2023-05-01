@@ -1,15 +1,12 @@
 {% extends "basic_table.html" %}
 
       {% block content %}
-         <h3>CLASSIFICATION PARAMETERS</h3>
-         <hr>
-
-         <form action="/upload" method = "POST">
+         <form action="/store_user_parameter" method = "POST">
          <table id="data" class="table table-striped">
             <tr>
             <td></td>
             {% for classification in classifications %}
-                <td align="center"><input type="text" placeholder="{{classification}}" name="{{classification}}" maxlength="30" /></td>
+                <td align="left"><input type="text" placeholder="{{classification}}" name="{{classification}}" class="form-control"/></td>
             {% endfor %}              
             </tr>    
           <tr>
@@ -23,7 +20,7 @@
               <tr>           
                 <td>{{ loop.index }}</td>
                 {% for parameter in class_parameter %}
-                    <td align="center"><input type="text" placeholder="{{parameter}}" name="{{parameter}}" maxlength="30" /></td>
+                    <td align="left"><input type="text" placeholder="{{parameter}}" name="{{parameter}}" class="form-control"/></td>
                 {% endfor %}
               </tr> 
             {% endfor %}
@@ -42,6 +39,6 @@
           $(document).ready(function () {
             $('#data').DataTable();
           });
+          
         </script>
       {% endblock %}
-   </html>

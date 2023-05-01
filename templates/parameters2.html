@@ -1,0 +1,39 @@
+{% extends "basic_table.html" %}
+
+      {% block content %}
+
+      <form action="/test" method = "POST">
+        
+        <div class="row g-3 align-items-center">
+          <div class="col-sm-1">
+            <label for="numParams" class="col-form-label">Classifications:</label>
+          </div>
+          <div class="col-sm-1  offset-sm-0">
+            <input type="number" class="form-control" id="numClass" name="numClass" min="1" required>
+          </div>
+        </div>  
+
+        <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
+        
+        <div class="row g-3 align-items-center">
+          <div class="col-sm-1">
+            <label for="numParams" class="col-form-label">Parameters:</label>
+          </div>
+          <div class="col-sm-1  offset-sm-0">
+            <input type="number" class="form-control" id="numParams" name="numParams" min="1" required>
+          </div>
+        </div>  
+
+        <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% endblock %}
+      {% block scripts %}
+        <script>
+          $(document).ready(function () {
+            $('#data').DataTable();
+          });
+        </script>
+      {% endblock %}
+   </html>
