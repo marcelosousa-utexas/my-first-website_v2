@@ -2,24 +2,128 @@
 
       {% block content %}
 
-      <form action="/n_parameters" method = "POST">
+      <!-- <form action="/n_parameters" method = "POST" id="form1""> -->
+      <form id="myform" action="/n_parameters" method="post">    
+
+        
+        <div class="row g-3">
+          <div class="col-sm-2 ms-sm-2">
+            <label for="modelName" class="col-form-label">Model name:</label>
+          </div>
+          <div class="col-sm-2  ms-sm-2">
+            <input type="text" class="form-control" id="modelName" name="modelName" required>
+            <!-- <input type="text" class="form-control" id="modelName" name="modelName" onfocusout="validateModelName()" required>             -->
+            <div id="validationModelName" class="invalid-feedback">
+              This model name already exists. Please, choose another name. 
+            </div>               
+          </div>
+        </div>  
+
+        <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>        
         
         <div class="row g-3">
           <div class="col-sm-2 ms-sm-2">
             <label for="numParams" class="col-form-label">Number of Classifications:</label>
           </div>
           <div class="col-sm-2  ms-sm-2">
-            <input type="number" class="form-control" id="numClass" name="numClass" min="1" required>
+            <input type="number" class="form-control" id="numClass" name="numClass" min="1" max="10" required>              
           </div>
         </div>  
 
         <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
         
+        <div class="row g-3">
+          <div class="col-sm-2 ms-sm-2">
+            <label for="numParams" class="col-form-label">Number of Parameters:</label>
+          </div>
+          <div class="col-sm-2  ms-sm-2">
+            <input type="number" class="form-control" id="numParams" name="numParams" min="1" required>
+          </div>
+        </div>  
 
         <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
-        
-        <button type="submit" class="btn btn-primary">Submit</button>
+      
+        <button id = "submit-btn" type="submit" class="btn btn-primary">Submit</button>
+        <div id="validationForm" class="invalid-feedback">
+          This model name already exists. Please, choose another name. 
+        </div>            
+
       </form>
+
+
+
       {% endblock %}
       {% block scripts %}
+        <!-- <script>
+          $(document).ready(function () {
+            $('#data').DataTable();
+          });
+        </script> -->
+    <script>
+
+
+        var form = document.querySelector("#myform");
+        form.addEventListener("submit", submitForm);
+
+      
+       function submitForm(event) {
+          event.preventDefault(); // prevent the form from submitting immediately
+          event.stopPropagation();    
+          checkModelDB().then(function (response) {
+              if (!response) {
+                form.removeEventListener("submit", submitForm); // remove the event listener       
+                form.submit(); // submit the form after the function has                 
+              }
+
+          }).catch(function(err){
+              alert(err);
+          });
+
+        }    
+
+      
+    function checkModelDB() {
+        return new Promise(function(resolve, reject){
+
+          $.ajax({
+            url: '/check_input',
+            type: 'POST',
+            data: {modelName: $('#modelName').val()}
+
+          }).done(function (response) {
+
+            if (response.error) {
+              // alert("1")
+              reject("Inexpected error! Load the page again.")
+
+            } else {
+              if (response.exists) {
+                $("input[name='modelName']").addClass("is-invalid");
+                $("input[name='modelName']").removeClass("is-valid");                
+                // alert("2")
+                // resolve("add invalid")
+                // reject(response.exists);
+              } else {
+                $("input[name='modelName']").removeClass("is-invalid");
+                $("input[name='modelName']").addClass("is-valid");
+                // alert("3")
+                // resolve("add valid")
+                // reject(response.exists);
+                  
+              }
+              resolve(response.exists);
+            }
+            
+          }); 
+          
+        });
+    }
+
+      
+    // aync1().then(function (resp) {
+    //     alert(resp);
+    // });
+      
+    </script>
       {% endblock %}
+   </html>

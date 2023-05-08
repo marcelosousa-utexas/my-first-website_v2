@@ -12,7 +12,6 @@ connection_ssl_arg = {
 engine = create_engine(db_connection_string, connect_args = connection_ssl_arg)
 
 
-
 def load_jobs_from_db():
   results_to_dict = []
   

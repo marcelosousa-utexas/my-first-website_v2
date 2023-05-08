@@ -30,39 +30,102 @@ class_load_model = load_model()
 class_run_model = classifier_model()
 class_file_io = file_io("")
 
+from database3 import Database
+#from models import Base
+#from database3 import SessionLocal, engine
+
+class_db = Database()
+#engine = class_db.engine
+
 
 @app.route("/")
 def init():
-  return render_template("home2.html")
+  return render_template("home.html")
 
 @app.route('/new_load_model', methods=['POST'])
 def new_load_model():
-    if request.form:
+  if request.form:
       option = request.form.getlist('inlineRadioOptions')
       if len(option) > 0:
         if option[0].__contains__('new_model'):
           print('new_model')
           class_user.set_new_model(True)
-          return render_template('new_model_n_parameters2.html')
+          return render_template('new_model_n_parameters.html')
         elif option[0].__contains__('load_model'):
           print('load_model')
           class_user.set_new_model(False)
-          return render_template("load_model_n_parameters.html") 
+          models = class_db.fetchAllModels()
+          print(models)
+          return render_template("load_models.html", models=models) 
         else:
           return "Invalid option", 400
-  
+    
+
+# @app.route('/new_load_model', methods=['GET','POST'])
+# def new_load_model():
+#   if request.method == 'POST':
+#     if request.form:
+#         option = request.form.getlist('inlineRadioOptions')
+#         if len(option) > 0:
+#           if option[0].__contains__('new_model'):
+#             print('new_model')
+#             class_user.set_new_model(True)
+#             return render_template('new_model_n_parameters2.html')
+#           elif option[0].__contains__('load_model'):
+#             print('load_model')
+#             class_user.set_new_model(False)
+#             return render_template("load_model_n_parameters.html") 
+#           else:
+#             return "Invalid option", 400
+#   else:
+#     class_user.set_new_model(True)
+#     return render_template('new_model_n_parameters2.html')    
+    
+# @app.route("/model_name_validation")
+# def model_name_validation():
+#   print("model validation")
+#   #return render_template('new_model_n_parameters2.html')
+#   return redirect(url_for('new_load_model'))
+#   #return redirect('/new_load_model')
+
+@app.route('/check_input', methods=['POST'])
+def check_input():
+  modelName = request.form['modelName']
+  print(modelName)
+  exists = class_db.search(modelName)
+  print(exists)
+  response = {'exists': exists}
+  resp = jsonify(response)
+  print(resp)
+  return resp
+
+# @app.route("/api/jobs")
+# def list_jobs():
+#   results_to_dict = load_jobs_from_db()
+#   return jsonify(results_to_dict)
+
 @app.route("/n_parameters", methods=['POST'])
 def n_parameters():
     if request.form:
-      numClass = request.form.get('numClass')
-      numParams = request.form.get('numParams')
+      flash("That username is already taken...")
+      #numClass = 6
+
+      modelName = request.form['modelName']
+      class_user.model_name = modelName
+      
+      numClass = request.form['numClass']
+      print(numClass)
+      numParams = request.form['numParams']
+      #numParams = 1
       class_par.set_number_of_classifications(int(numClass))
       class_par.set_number_of_parameters(int(numParams))
       class_par.classification_name_list = []
       class_par.parameter_name_matrix = []
       classification_list, parameter_matrix, inverted_parameter_matrix = class_par.create_parameter_matrix()
+      #response = {'data': numClass}
+      #return jsonify(response)
       # Do something with the numParams and numClass values
-      return render_template("new_model_define_parameters6.html", classifications=classification_list, numParams = class_par.get_number_of_parameters(), class_parameters=inverted_parameter_matrix)
+      return render_template("new_model_define_parameters.html", classifications=classification_list, numParams = class_par.get_number_of_parameters(), class_parameters=inverted_parameter_matrix)
 
 
 @app.route("/store_user_parameter", methods = ['POST'])
@@ -98,13 +161,13 @@ def store_user_parameter():
     
     parameter_value_matrix = lista_elementos_mais_comuns
     
-    modelname = 'notas_fiscais'
-    class_user.model_name = modelname
+    #modelname = 'notas_fiscais'
+    #class_user.model_name = modelname
   
     class_save_model.build_all_models(parameter_value_matrix)
-    class_save_model.save_all(modelname)
+    class_save_model.save_all(class_user.model_name)
   
-    return render_template("home0_v2.html")        
+    return render_template("upload_file_type.html")        
     #return render_template("upload_file.html")
 
 

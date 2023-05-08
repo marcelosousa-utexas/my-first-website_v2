@@ -1,0 +1,19 @@
+
+
+{% extends "basic_table.html" %}
+
+      {% block content %}
+
+      <div class="row" style="margin-bottom:32px">
+      <h2 class="text-center mt-2 mb-4"> Select one of the existing models</h2>
+      <div>
+        {% for model in models %}
+          {% include 'jobitem3.html' %}
+        {% endfor %}
+      </div>
+
+
+      {% endblock %}
+
+      {% block scripts %}
+      {% endblock %}      

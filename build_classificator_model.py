@@ -1,7 +1,10 @@
-
+#import datetime
 import warnings
 from disk import disk_access
 from gensim import corpora, similarities, models
+from database3 import Database
+from models import Models
+from datetime import datetime
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 warnings.filterwarnings(action='ignore', category=FutureWarning, module='gensim')
@@ -39,6 +42,15 @@ class build_model():
 
     self.write_to_disk(self.model_LSI, modelname, ".lsi")
     self.write_to_disk(self.index_LSI, modelname, "_lsi.index")
+    
+    disk = disk_access()
+    #class_model = Models()
+    class_db = Database()
+    model = Models(name = modelname, pathLocation = disk.get_model_absolute_path(modelname) , userName = "Marcelo", date = datetime.utcnow())
+    class_db.saveData(model)
+    
+  
+    
   
   def build_dict(self, parameter_value_list):
     dictionary = corpora.Dictionary(parameter_value_list)
