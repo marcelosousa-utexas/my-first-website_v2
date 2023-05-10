@@ -71,7 +71,21 @@ class Database():
         #print(author)
         #author = session.query(searchClass).filter(searchType == searchName).first()
         
-
+    def searchSelectedModel(self, id):      
+        # bind an individual Session to the connection
+        session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine) 
+        session = session()
+        #found = session.query(Models).filter(Models.name == modelName).first()
+        found = session.query(Models).filter(Models.id == id).first()
+        #found = session.query(Models).get(id)      
+        print(found)
+        if found:
+          return found.columns_to_dict()
+        else:
+          return None
+        #print(author)
+        #author = session.query(searchClass).filter(searchType == searchName).first()
+  
     #def search(self, searchClass, searchType, searchName):
     def saveData(self, object):     
         # bind an individual Session to the connection

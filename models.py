@@ -35,4 +35,5 @@ class Models(Base):
         return dict_
       
     def __repr__(self): 
-      return "<Models(name='%s')>" % (self.name)
+      return "<Models(id='%s', name='%s')>" % (self.id, self.name)
+      #return "<Customer(name='%s', age='%s', email='%s', address='%s', zip code='%s')>" % (self.name, self.age, self.email, self.address, self.zip_code)

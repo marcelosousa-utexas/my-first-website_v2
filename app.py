@@ -1,5 +1,6 @@
 import os
 import io
+import pandas as pd
 #import nltk
 #import pickle
 from flask import Flask, render_template, request, flash, make_response, jsonify, redirect, url_for
@@ -41,6 +42,36 @@ class_db = Database()
 @app.route("/")
 def init():
   return render_template("home.html")
+
+@app.route("/api/models")
+def api_model():
+  return render_template("home.html")
+
+# @app.route("/model/<id>")
+# def show_model():
+#   model = class_db.searchSelectedModel("notas_fiscais")
+#   print(model)
+#   return jsonify(model)
+
+@app.route("/model/<id>")
+def show_model(id):
+  model = class_db.searchSelectedModel(id)
+  if model:
+    modelName = model['name']
+    class_user.model_name = modelName
+    
+    df = class_save_model.load(modelName)
+    column_names = list(df.columns.values.tolist())
+    row_data = list(df.values.tolist())
+    class_par.set_header(column_names)
+    # df = pd.DataFrame({'A': [0, 1, 2, 3, 4],
+    #                  'B': [5, 6, 7, 8, 9],
+    #                  'C': ['a', 'b', 'c--', 'd', 'e']})
+    #return render_template("load_model_define_parameters.html", tables=[df.to_html(classes='data')], titles=df.columns.values)
+    #return render_template("load_model_define_parameters.html", column_names=df.columns.values, row_data=list(df.values.tolist()))  
+    return render_template("load_model_define_parameters.html", column_names=column_names, row_data=row_data)  
+  else:
+    return jsonify(model)
 
 @app.route('/new_load_model', methods=['POST'])
 def new_load_model():
@@ -91,12 +122,12 @@ def new_load_model():
 @app.route('/check_input', methods=['POST'])
 def check_input():
   modelName = request.form['modelName']
-  print(modelName)
+  #print(modelName)
   exists = class_db.search(modelName)
-  print(exists)
+  #print(exists)
   response = {'exists': exists}
   resp = jsonify(response)
-  print(resp)
+  #print(resp)
   return resp
 
 # @app.route("/api/jobs")
@@ -114,7 +145,7 @@ def n_parameters():
       class_user.model_name = modelName
       
       numClass = request.form['numClass']
-      print(numClass)
+      #print(numClass)
       numParams = request.form['numParams']
       #numParams = 1
       class_par.set_number_of_classifications(int(numClass))
@@ -133,43 +164,73 @@ def store_user_parameter():
   if request.form:
     #data = request.args
     data = request.form
-    print("parameter_data : ", data)
-    model_matrix = class_par.show_up(class_par.parameter_name_matrix, data)
-    #print(model_matrix)
-  
-  
-    lista_elementos_mais_comuns = []
-    lista_elementos_mais_comuns.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
-    lista_elementos_mais_comuns.append(['NFS-e','verificacao','prestador','tomador','ISS','prefeitura'])  #NFm
-    lista_elementos_mais_comuns.append(['autorizacao','liquidacao','pagamento','despesa','ordenador','extenso']) #autorizacao e liquidacao da despesa
-    lista_elementos_mais_comuns.append(['lancamento','evento','especie','contabil','orcamentaria','decreto']) #NL
-    lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
-    lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) #OB
-    lista_elementos_mais_comuns.append([])
+    #print("parameter_data : ", data)
+    data_matrix = class_par.build_data_matrix(class_par.parameter_name_matrix, data)
+    header = class_par.build_header(class_par.classification_name_list, data)
+    class_par.set_header(header)
+    #print(data_matrix)
+    #print(header)    
 
-    lista_elementos_mais_comuns = []
-    lista_elementos_mais_comuns.append(['edital','licitacao','supensao','concurso']) #SEACOMP
-    lista_elementos_mais_comuns.append(['pessoal','aposentadoria','beneficio','salario'])  #SEFIPE
-    lista_elementos_mais_comuns.append(['auditoria','fiscalizacao','regularidade','lei']) #SEAUD
-    lista_elementos_mais_comuns.append(['contas','governo','gestao','fiscal']) #SEMAG
-    lista_elementos_mais_comuns.append(['contas','tomada','prestacao','regular']) #SECONT
-    lista_elementos_mais_comuns.append([])
+
+
+    inverted_data_matrix = [[data_matrix[j][i] for j in range(len(data_matrix))] for i in range(len(data_matrix[0]))]
+    #print(inverted_data_matrix)
+    # lista_elementos_mais_comuns = []
+    # lista_elementos_mais_comuns.append(['danfe','chave','acesso','autenticidade','nf-e','www.nfe.fazenda.gov.br/portal']) #NF
+    # lista_elementos_mais_comuns.append(['NFS-e','verificacao','prestador','tomador','ISS','prefeitura'])  #NFm
+    # lista_elementos_mais_comuns.append(['autorizacao','liquidacao','pagamento','despesa','ordenador','extenso']) #autorizacao e liquidacao da despesa
+    # lista_elementos_mais_comuns.append(['lancamento','evento','especie','contabil','orcamentaria','decreto']) #NL
+    # lista_elementos_mais_comuns.append(['previsao','pagamento','pagadora','referencia','ne', 'domicilio']) #PP
+    # lista_elementos_mais_comuns.append(['pdet090','competencia','ordem','bancaria','bancario','domicilio']) #OB
+    # #lista_elementos_mais_comuns.append([])
+
+    # lista_elementos_mais_comuns = []
+    # lista_elementos_mais_comuns.append(['edital','licitacao','supensao','concurso']) #SEACOMP
+    # lista_elementos_mais_comuns.append(['pessoal','aposentadoria','beneficio','salario'])  #SEFIPE
+    # lista_elementos_mais_comuns.append(['auditoria','fiscalizacao','regularidade','lei']) #SEAUD
+    # lista_elementos_mais_comuns.append(['contas','governo','gestao','fiscal']) #SEMAG
+    # lista_elementos_mais_comuns.append(['contas','tomada','prestacao','regular']) #SECONT    
+    # lista_elementos_mais_comuns.append([])
+
+    # lista_elementos_mais_comuns2 = [[lista_elementos_mais_comuns[j][i] for j in range(len(lista_elementos_mais_comuns))] for i in range(len(lista_elementos_mais_comuns[0]))]
+    # print(lista_elementos_mais_comuns2)
+    # lista_elementos_mais_comuns = []
+    # lista_elementos_mais_comuns.append(['edital','licitacao','supensao','concurso']) #SEACOMP
+    # lista_elementos_mais_comuns.append(['pessoal','aposentadoria','beneficio','salario'])  #SEFIPE
+    # lista_elementos_mais_comuns.append(['auditoria','fiscalizacao','regularidade','lei']) #SEAUD
+    # lista_elementos_mais_comuns.append(['contas','governo','gestao','fiscal']) #SEMAG
+    # lista_elementos_mais_comuns.append(['contas','tomada','prestacao','regular']) #SECONT
+    # lista_elementos_mais_comuns.append([])
     
   
-    class_par.classification_name_list = ['NF','NFm','Aut. e liq.da despesa', 'NL', 'PP', 'OB']
-    class_par.classification_name_list = ['SEACOMP','SEFIPE', 'SEAUD', 'SEMAG', 'SECONT']
+    # class_par.classification_name_list = ['NF','NFm','Aut. e liq.da despesa', 'NL', 'PP', 'OB']
+    # class_par.classification_name_list = ['SEACOMP','SEFIPE', 'SEAUD', 'SEMAG', 'SECONT']
     
-    parameter_value_matrix = lista_elementos_mais_comuns
+    # parameter_value_matrix = lista_elementos_mais_comuns
     
     #modelname = 'notas_fiscais'
     #class_user.model_name = modelname
-  
-    class_save_model.build_all_models(parameter_value_matrix)
+    #print(class_par.classification_name_list)
+    df = pd.DataFrame(inverted_data_matrix, columns=class_par.get_header())
+    data_matrix.append([])
+    class_par.set_data_matrix(data_matrix)
+    
+    class_save_model.save_pickle(df, class_user.model_name)
+    class_save_model.build_all_models(class_par.get_data_matrix())
     class_save_model.save_all(class_user.model_name)
+    
+    #df = class_save_model.load(class_user.model_name)
+    #print(df)
   
-    return render_template("upload_file_type.html")        
+    return render_template("upload_file_type.html")   
+    #return "teste" 
     #return render_template("upload_file.html")
 
+
+@app.route('/upload_file_type', methods=['POST'])
+def upload_file_type():
+    return render_template("upload_file_type.html")
+      
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -212,7 +273,8 @@ def upload_files():
         #if not class_user.type:
         if not class_user.get_type():
           class_user.set_type(file_ext)
-        class_user.add_file(full_file_path)
+        if not class_user.update_file_if_existis(full_file_path):
+          class_user.add_file(full_file_path)
     return '', 204
 
 @app.route('/upload_plain_text', methods=['POST'])
@@ -246,10 +308,10 @@ def model_result():
   index_LSI = class_load_model.index_LSI
 
   class_run_model.set_model_parameters(class_user.get_files(), dictionary, model_TFIDF, index_TFIDF, model_LSI, index_LSI)
-  class_run_model.start_classifier_model(class_file_io.get_file_type(), class_file_io.get_single_multiple_class())
+  class_run_model.start_classifier_model(class_file_io.get_file_type(), class_file_io.get_single_multiple_class(), class_par.get_header())
   model_result = class_run_model.get_model_result()
 
-  return render_template("model_result.html", classification=class_par.classification_name_list, model_result=model_result) 
+  return render_template("model_result.html", classification=class_par.get_header(), model_result=model_result) 
 
 
 @app.route('/get_csv', methods=['POST'])

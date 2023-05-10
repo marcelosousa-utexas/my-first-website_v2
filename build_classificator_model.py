@@ -1,10 +1,12 @@
 #import datetime
 import warnings
+#import pandas as pd
 from disk import disk_access
 from gensim import corpora, similarities, models
 from database3 import Database
 from models import Models
 from datetime import datetime
+
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 warnings.filterwarnings(action='ignore', category=FutureWarning, module='gensim')
@@ -34,6 +36,10 @@ class build_model():
     self.corpus_LSI = self.model_LSI[self.corpus_TFIDF] #aplica o modelo para transformar o Corpus para LSI
     self.index_LSI = similarities.MatrixSimilarity(self.model_LSI[self.corpus_TFIDF])
 
+
+  def save_pickle(self, object, modelname):
+    self.write_to_disk(object, modelname, ".pkl")
+  
   def save_all(self, modelname):
     self.write_to_disk(self.dictionary, modelname, ".dict")
     
@@ -42,7 +48,8 @@ class build_model():
 
     self.write_to_disk(self.model_LSI, modelname, ".lsi")
     self.write_to_disk(self.index_LSI, modelname, "_lsi.index")
-    
+
+    #write to database
     disk = disk_access()
     #class_model = Models()
     class_db = Database()
@@ -50,7 +57,6 @@ class build_model():
     class_db.saveData(model)
     
   
-    
   
   def build_dict(self, parameter_value_list):
     dictionary = corpora.Dictionary(parameter_value_list)
@@ -63,4 +69,13 @@ class build_model():
   def write_to_disk(self, object, modelname, type):
     filename = modelname + type
     disk = disk_access()
-    disk.write_model(object, filename)
+    if ".pkl" in type:
+      disk.write_pickle(object, filename)
+    else:
+      disk.write_model(object, filename)
+      
+  def load(self, modelname):
+    filename = modelname + ".pkl"
+    disk = disk_access()       
+    return disk.load_pickle(filename)
+    

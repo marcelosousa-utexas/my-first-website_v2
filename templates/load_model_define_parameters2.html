@@ -1,0 +1,113 @@
+{% extends "basic_table.html" %}
+
+
+
+
+      {% block content %}
+
+        <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"> -->
+        
+         <form action="/store_user_parameter" method = "POST">
+          <table id="data" class="table table-striped">
+          <thead>
+            <tr>
+              <th><strong>#</strong></th>
+              {% for classification in column_names %}
+                  <th>{{classification}}</th>
+                  <!-- <th align="center"><input type="text" value="{{classification}}" name="{{classification}}" class="form-control"/></th>               -->
+              {% endfor %}              
+              </tr>    
+          </thead>
+          <tbody>   
+            <tr>
+            {% for class_parameter in row_data %}
+              <tr>        
+                <td><strong>{{ loop.index }}</strong></td>
+                {% for parameter in class_parameter %}
+                    <td>{{parameter}}</td>
+                    <!-- <td align="center"><input type="text" value="{{parameter}}" name="{{parameter}}" class="form-control"/></td>                 -->
+                {% endfor %}
+              </tr> 
+            {% endfor %}
+             </tr> 
+          <!-- <a class="btn btn-primary rounded-0 btn-block" id="insertRow" href="#">Add new row</a>  -->
+          </tbody>
+         <!-- <a class="btn btn-primary rounded-0 btn-block" id="insertRow" href="#">Add new row</a>         -->
+          </table>
+
+          <div class="row">
+            <div class="col-sm-2  ms-sm-2">
+              <a class="btn btn-primary" id="insertRow" href="#">Add new row</a>     
+            </div>
+          </div>
+
+          <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
+           
+          <div class="row">
+            <div class="col-sm-2  ms-sm-2">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+           
+          
+            <!-- <button id="add_row" class="btn btn-default pull-left">Add Row</button><button id='delete_row' class="pull-right btn btn-default">Delete Row</button> -->
+          
+      
+          <!-- <button type="submit" class="btn btn-primary">Submit</button>
+          <div style="height: 1px; margin: 1em 0; background-color: transparent;"></div>
+          <input type="button" value="Reset"> -->
+           
+   
+          </form>
+      </body>
+      {% endblock %}
+      {% block scripts %}
+        <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script> -->
+      <script>
+          $(document).ready(function () {
+            $('#data').DataTable();
+          });
+          
+
+          $(function () {
+          
+              // Start counting from the third row
+              var n_classifications = {{ column_names|tojson }};
+              var counter =  "{{ numParams}}";
+              console.log(counter);
+            
+          
+              $("#insertRow").on("click", function (event) {
+                  event.preventDefault();
+          
+                  
+                  var newRow = $("<tr>");
+                  var cols = '';
+                  counter++;
+          
+                  // Table columns
+                  cols += '<th>' + counter + '</th>';
+          
+                  for (var j = 0; j< n_classifications.length; j++) {
+                     cols += '<td><input class="form-control" type="text" name="' + n_classifications[j] + '_parameter_' + counter + '" placeholder="' + n_classifications[j] + '_parameter_' + counter + '"></td>';
+                  }  
+                  cols += '<td><button class="btn btn-danger" id ="deleteRow"><i class="fa fa-trash"></i></button</td>';
+          
+                  // Insert the columns inside a row
+                  newRow.append(cols);
+          
+                  // Insert the row inside a table
+                  $("table").append(newRow);
+          
+              });
+          
+              // Remove row when delete btn is clicked
+              $("table").on("click", "#deleteRow", function (event) {
+                  $(this).closest("tr").remove();
+                  counter -= 1
+              });
+          });
+            </script>
+          {% endblock %}
+

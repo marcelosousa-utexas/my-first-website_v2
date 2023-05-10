@@ -1,4 +1,5 @@
 import os
+import pickle
 
 MODELS_FOLDER_ENV = 'MODELS_FOLDER'
 MODELS_FOLDER = os.environ[MODELS_FOLDER_ENV]
@@ -18,6 +19,11 @@ class disk_access():
     path = PUBLIC_FOLDER + MODELS_FOLDER + filename
     path = os.path.normpath(path)
     object.save(path)
+
+  def write_pickle(self, object, filename): 
+    path = PUBLIC_FOLDER + MODELS_FOLDER + filename
+    path = os.path.normpath(path)
+    pickle.dump(object, open(path, 'wb'))
 
   def write_file(self, object, filename): 
     path = PUBLIC_FOLDER + FILE_FOLDER + filename
@@ -40,6 +46,11 @@ class disk_access():
     path = os.path.normpath(path)    
     return path       
 
+  def load_pickle(self, filename): 
+    path = self.get_model_absolute_path(filename)
+    path = os.path.normpath(path)
+    return pickle.load(open(path, 'rb'))
+    
   # def loadfile(self, object, filename): 
   #   path = self.get_file_relative_path(filename)
   #   return object.load(path)

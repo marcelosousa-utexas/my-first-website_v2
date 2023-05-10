@@ -42,7 +42,7 @@ class classifier_model():
   def get_model_header(self):
     return self.model_header
   
-  def start_classifier_model(self, fileType, single_multiple_class):
+  def start_classifier_model(self, fileType, single_multiple_class, header):
 
     
     model_result = []
@@ -111,7 +111,7 @@ class classifier_model():
                       file_name_with_extension = os.path.basename(each_file)
                       filename = os.path.splitext(file_name_with_extension)[0]
               
-                      find_classification = [filename, page_number, document_type, best_fit_tfidf_model,tfidf_alert, best_fit_lsi_model, lsi_alert]                        
+                      find_classification = [filename, page_number, header[document_type], best_fit_tfidf_model,tfidf_alert, best_fit_lsi_model, lsi_alert]                        
                       model_result_each_file.append(find_classification)
       model_result.append(model_result_each_file) 
 

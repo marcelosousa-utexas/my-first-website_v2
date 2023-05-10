@@ -25,3 +25,15 @@ class user():
 
   def get_type(self):
     return self.type
+
+  def set_model_name(self, model_name):
+    self.model_name = model_name
+
+  def get_model_name(self):
+    return self.model_name
+
+  def update_file_if_existis(self, fullpath):
+    if fullpath in self.files:
+      idx = self.files.index(fullpath)
+      self.files[idx] = fullpath
+      return True
